@@ -2,10 +2,10 @@ import { Pagination } from '../interfaces/Pagination';
 
 export function parsePagination(pagination: any): Pagination {
   return {
-    CurrentPage: pagination['current-page'],
-    PreviousPage: pagination['previous-page'],
-    NextPage: pagination['next-page'],
-    TotalPages: pagination['total-pages'],
-    TotalCount: pagination['total-count'],
+    currentPage: pagination['current-page'],
+    previousPage: pagination['previous-page'],
+    nextPage: pagination['next-page'],
+    totalPages: pagination['total-pages'],
+    totalCount: pagination['total-count'],
   };
 }

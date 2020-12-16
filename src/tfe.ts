@@ -21,17 +21,17 @@ export class Client implements IClient {
   Workspaces: Workspaces;
 
   constructor(config: Config) {
-    config.Address =
-      config.Address || process.env.TFE_ADDRESS || DefaultAddress;
-    config.BasePath = config.BasePath || DefaultBasePath;
-    config.Token = config.Token || (process.env.TFE_TOKEN as string);
+    config.address =
+      config.address || process.env.TFE_ADDRESS || DefaultAddress;
+    config.basePath = config.basePath || DefaultBasePath;
+    config.token = config.token || (process.env.TFE_TOKEN as string);
 
-    if (!config.Token) {
+    if (!config.token) {
       throw new Error('missing API token');
     }
 
-    this.baseURL = urljoin(config.Address, config.BasePath);
-    this.token = config.Token;
+    this.baseURL = urljoin(config.address, config.basePath);
+    this.token = config.token;
     this.HTTPClient = axios.create({
       baseURL: this.baseURL,
       headers: {

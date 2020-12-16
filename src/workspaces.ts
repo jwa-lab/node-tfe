@@ -25,7 +25,7 @@ export class Workspaces implements IWorkspaces {
     this.client = client;
   }
 
-  async Create(
+  async create(
     organization: string,
     options: WorkspaceCreateOptions
   ): Promise<Workspace> {
@@ -42,7 +42,7 @@ export class Workspaces implements IWorkspaces {
     return deserializer(response);
   }
 
-  async List(
+  async list(
     organization: string,
     options?: WorkspaceListOptions
   ): Promise<WorkspaceList> {
@@ -54,13 +54,13 @@ export class Workspaces implements IWorkspaces {
     const response = await this.client.get(endpoint, options);
 
     const workspaceList = {
-      Pagination: parsePagination(response.meta.pagination),
-      Items: await deserializer(response),
+      pagination: parsePagination(response.meta.pagination),
+      items: await deserializer(response),
     };
     return workspaceList;
   }
 
-  async Read(organization: string, workspaceName: string): Promise<Workspace> {
+  async read(organization: string, workspaceName: string): Promise<Workspace> {
     const endpoint = urljoin(
       '/organizations/',
       encodeURI(organization),
@@ -71,13 +71,13 @@ export class Workspaces implements IWorkspaces {
     return deserializer(response);
   }
 
-  async ReadByID(workspaceId: string): Promise<Workspace> {
+  async readByID(workspaceId: string): Promise<Workspace> {
     const endpoint = urljoin('/workspaces', encodeURI(workspaceId));
     const response = await this.client.get(endpoint);
     return deserializer(response);
   }
 
-  async Update(
+  async update(
     organization: string,
     workspace: string,
     options: WorkspaceUpdateOptions
@@ -88,6 +88,19 @@ export class Workspaces implements IWorkspaces {
       'workspaces',
       encodeURI(workspace)
     );
+    const serializedOptions = await WorkspaceUpdateOptionsSerializer.serialize(
+      options
+    );
+
+    const response = await this.client.patch(endpoint, serializedOptions);
+    return deserializer(response);
+  }
+
+  async updateById(
+    workspaceId: string,
+    options: WorkspaceUpdateOptions
+  ): Promise<Workspace> {
+    const endpoint = urljoin('/workspaces', encodeURI(workspaceId));
     const serializedOptions = await WorkspaceUpdateOptionsSerializer.serialize(
       options
     );

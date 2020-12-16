@@ -2,23 +2,23 @@
 import { WorkspaceActions } from './WorkspaceActions';
 
 export interface Workspace {
-  ID: string;
-  Actions: WorkspaceActions;
-  AgentPoolID: string;
-  AllowDestroyPlan: boolean;
-  AutoApply: boolean;
-  CanQueueDestroyPlan: boolean;
-  CreatedAt: Date;
-  Environment: string;
-  ExecutionMode: string;
-  FileTriggersEnabled: boolean;
-  Locked: boolean;
-  MigrationEnvironment: string;
-  Name: string;
-  Operations: boolean;
-  QueueAllRuns: boolean;
-  SpeculativeEnabled: boolean;
-  TerraformVersion: string;
-  TriggerPrefixes: string[];
-  WorkingDirectory: string;
+  id: string;
+  actions: WorkspaceActions;
+  agentPoolID: string;
+  allowDestroyPlan: boolean;
+  autoApply: boolean;
+  canQueueDestroyPlan: boolean;
+  createdAt: Date;
+  environment: string;
+  executionMode: string;
+  fileTriggersEnabled: boolean;
+  locked: boolean;
+  migrationEnvironment: string;
+  name: string;
+  operations: boolean;
+  queueAllRuns: boolean;
+  speculativeEnabled: boolean;
+  terraformVersion: string;
+  triggerPrefixes: string[];
+  workingDirectory: string;
 }
