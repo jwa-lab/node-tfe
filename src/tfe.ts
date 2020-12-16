@@ -1,20 +1,18 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import qs from 'qs';
 import urljoin from 'url-join';
+import { ResourceNotFoundError } from './errors/ResourceNotFoundError';
+import { UnauthorizedError } from './errors/UnauthorizedError';
+import { WorkspaceLockError } from './errors/WorkspaceLockError';
 import { Client as IClient } from './interfaces/Client';
 import { Config } from './interfaces/Config';
 import { Workspaces } from './workspaces';
 
 const userAgent = 'node-tfe',
-  headerRateLimit = 'X-RateLimit-Limit',
-  headerRateReset = 'X-RateLimit-Reset',
-  headerAPIVersion = 'TFP-API-Version',
   // DefaultAddress of Terraform Enterprise.
   DefaultAddress = 'https://app.terraform.io',
   // DefaultBasePath on which the API is served.
-  DefaultBasePath = '/api/v2/',
-  // PingEndpoint is a no-op API endpoint used to configure the rate limiter
-  PingEndpoint = 'ping';
+  DefaultBasePath = '/api/v2/';
 
 export class Client implements IClient {
   baseURL: string;
@@ -36,7 +34,10 @@ export class Client implements IClient {
     this.token = config.Token;
     this.HTTPClient = axios.create({
       baseURL: this.baseURL,
-      headers: { Authorization: 'Bearer ' + this.token },
+      headers: {
+        Authorization: 'Bearer ' + this.token,
+        'User-Agent': userAgent,
+      },
       paramsSerializer: function (params) {
         return qs.stringify(params, { arrayFormat: 'brackets' });
       },
@@ -52,15 +53,13 @@ export class Client implements IClient {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
           if (error.response?.status === 401) {
-            throw new Error('Unauthorized');
+            throw new UnauthorizedError();
           }
           if (error.response?.status === 404) {
-            throw new Error('Resource not found');
+            throw new ResourceNotFoundError();
           }
           if (error.response?.status === 409) {
-            throw new Error(
-              'Conflict: either ErrWorkspaceLocked | ErrWorkspaceNotLocked | ErrWorkspaceNotLocked'
-            );
+            throw new WorkspaceLockError();
           }
           throw new Error(JSON.stringify(error.response.data));
         }
@@ -89,6 +88,24 @@ export class Client implements IClient {
   async post(path: string, body?: any): Promise<any> {
     const config = {
       method: 'post' as const,
+      url: path,
+      headers: {
+        Authorization: 'Bearer ' + this.token,
+        Accept: 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+      },
+      data: body || {},
+    };
+
+    const response = await this.HTTPClient(config);
+
+    // https://www.terraform.io/docs/cloud/api/index.html#json-api-documents
+    return response.data;
+  }
+
+  async patch(path: string, body?: any): Promise<any> {
+    const config = {
+      method: 'patch' as const,
       url: path,
       headers: {
         Authorization: 'Bearer ' + this.token,

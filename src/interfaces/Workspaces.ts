@@ -2,6 +2,7 @@ import { Workspace } from './Workspace';
 import { WorkspaceCreateOptions } from './WorkspaceCreateOptions';
 import { WorkspaceList } from './WorkspaceList';
 import { WorkspaceListOptions } from './WorkspaceListOptions';
+import { WorkspaceUpdateOptions } from './WorkspaceUpdateOptions';
 
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/workspaces.html
 
@@ -23,4 +24,11 @@ export interface Workspaces {
 
   // ReadByID reads a workspace by its ID.
   ReadByID(workspaceID: string): Promise<Workspace>;
+
+  // Update settings of an existing workspace.
+  Update(
+    organization: string,
+    workspace: string,
+    options: WorkspaceUpdateOptions
+  ): Promise<Workspace>;
 }

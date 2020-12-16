@@ -1,34 +1,22 @@
 // Workspaces describes all the workspace related methods that the Terraform
 // Enterprise API supports.
-//
 
-import { Serializer } from 'jsonapi-serializer';
 import urljoin from 'url-join';
 import { Workspace } from './interfaces/Workspace';
-import { WorkspaceCreateOptions } from './interfaces/WorkspaceCreateOptions';
+import {
+  WorkspaceCreateOptions,
+  WorkspaceCreateOptionsSerializer,
+} from './interfaces/WorkspaceCreateOptions';
 import { WorkspaceList } from './interfaces/WorkspaceList';
 import { WorkspaceListOptions } from './interfaces/WorkspaceListOptions';
 import { Workspaces as IWorkspaces } from './interfaces/Workspaces';
+import {
+  WorkspaceUpdateOptions,
+  WorkspaceUpdateOptionsSerializer,
+} from './interfaces/WorkspaceUpdateOptions';
 import { Client } from './tfe';
 import { deserializer } from './utils/deserializer';
 import { parsePagination } from './utils/parsePagination';
-
-const WorkspaceCreateOptionsSerializer = new Serializer('workspaces', {
-  attributes: [
-    'AgentPoolID',
-    'AllowDestroyPlan',
-    'AutoApply',
-    'ExecutionMode',
-    'FileTriggersEnabled',
-    'MigrationEnvironment',
-    'Name',
-    'QueueAllRuns',
-    'SpeculativeEnabled',
-    'TerraformVersion',
-    'TriggerPrefixes',
-    'WorkingDirectory',
-  ],
-});
 
 export class Workspaces implements IWorkspaces {
   private client: Client;
@@ -86,6 +74,25 @@ export class Workspaces implements IWorkspaces {
   async ReadByID(workspaceId: string): Promise<Workspace> {
     const endpoint = urljoin('/workspaces', encodeURI(workspaceId));
     const response = await this.client.get(endpoint);
+    return deserializer(response);
+  }
+
+  async Update(
+    organization: string,
+    workspace: string,
+    options: WorkspaceUpdateOptions
+  ): Promise<Workspace> {
+    const endpoint = urljoin(
+      '/organizations',
+      encodeURI(organization),
+      'workspaces',
+      encodeURI(workspace)
+    );
+    const serializedOptions = await WorkspaceUpdateOptionsSerializer.serialize(
+      options
+    );
+
+    const response = await this.client.patch(endpoint, serializedOptions);
     return deserializer(response);
   }
 }

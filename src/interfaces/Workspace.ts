@@ -1,6 +1,5 @@
-import { WorkspaceActions } from './workspaces';
-
 // Workspace represents a Terraform Enterprise workspace.
+import { WorkspaceActions } from './WorkspaceActions';
 
 export interface Workspace {
   ID: string;
