@@ -1,6 +1,8 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import qs from 'qs';
+import internal from 'stream';
 import urljoin from 'url-join';
+import { ConfigurationVersions } from './configurationVersions';
 import { ResourceNotFoundError } from './errors/ResourceNotFoundError';
 import { UnauthorizedError } from './errors/UnauthorizedError';
 import { WorkspaceLockError } from './errors/WorkspaceLockError';
@@ -19,6 +21,7 @@ export class Client implements IClient {
   token: string;
   HTTPClient: AxiosInstance;
   Workspaces: Workspaces;
+  ConfigurationVersions: ConfigurationVersions;
 
   constructor(config: Config) {
     config.address =
@@ -66,7 +69,10 @@ export class Client implements IClient {
         throw error;
       }
     );
+
+    // ADD endpoints
     this.Workspaces = new Workspaces(this);
+    this.ConfigurationVersions = new ConfigurationVersions(this);
   }
 
   async get(path: string, params?: any): Promise<any> {
@@ -94,6 +100,24 @@ export class Client implements IClient {
         Accept: 'application/vnd.api+json',
         'Content-Type': 'application/vnd.api+json',
       },
+      data: body,
+    };
+
+    const response = await this.HTTPClient(config);
+
+    // https://www.terraform.io/docs/cloud/api/index.html#json-api-documents
+    return response.data;
+  }
+
+  async put(path: string, body: internal.Readable): Promise<any> {
+    const config = {
+      method: 'put' as const,
+      url: path,
+      headers: {
+        Authorization: 'Bearer ' + this.token,
+        Accept: 'application/vnd.api+json',
+        'Content-Type': 'application/octet-stream',
+      },
       data: body || {},
     };
 
@@ -120,6 +144,7 @@ export class Client implements IClient {
     // https://www.terraform.io/docs/cloud/api/index.html#json-api-documents
     return response.data;
   }
+
   async delete(path: string): Promise<any> {
     const config = {
       method: 'delete' as const,
