@@ -2,6 +2,7 @@ import { Workspace } from './Workspace';
 import { WorkspaceCreateOptions } from './WorkspaceCreateOptions';
 import { WorkspaceList } from './WorkspaceList';
 import { WorkspaceListOptions } from './WorkspaceListOptions';
+import { WorkspaceLockOptions } from './WorkspaceLockOptions';
 import { WorkspaceUpdateOptions } from './WorkspaceUpdateOptions';
 
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/workspaces.html
@@ -43,4 +44,13 @@ export interface Workspaces {
 
   // DeleteByID deletes a workspace by its ID.
   deleteById(workspaceiD: string): Promise<void>;
+
+  // Lock a workspace by its ID.
+  lock(workspaceId: string, options?: WorkspaceLockOptions): Promise<Workspace>;
+
+  // Unlock a workspace by its ID.
+  unlock(workspaceId: string): Promise<Workspace>;
+
+  // ForceUnlock a workspace by its ID.
+  forceUnlock(workspaceId: string): Promise<Workspace>;
 }

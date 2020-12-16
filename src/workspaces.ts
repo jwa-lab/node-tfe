@@ -9,6 +9,10 @@ import {
 } from './interfaces/WorkspaceCreateOptions';
 import { WorkspaceList } from './interfaces/WorkspaceList';
 import { WorkspaceListOptions } from './interfaces/WorkspaceListOptions';
+import {
+  WorkspaceLockOptions,
+  WorkspaceLockOptionsSerializer,
+} from './interfaces/WorkspaceLockOptions';
 import { Workspaces as IWorkspaces } from './interfaces/Workspaces';
 import {
   WorkspaceUpdateOptions,
@@ -124,5 +128,45 @@ export class Workspaces implements IWorkspaces {
     const endpoint = urljoin('/workspaces', encodeURI(workspaceId));
 
     return this.client.delete(endpoint);
+  }
+
+  async lock(
+    workspaceId: string,
+    options: WorkspaceLockOptions = {}
+  ): Promise<Workspace> {
+    const endpoint = urljoin(
+      '/workspaces',
+      encodeURI(workspaceId),
+      '/actions/lock'
+    );
+
+    const serializedOptions = await WorkspaceLockOptionsSerializer.serialize(
+      options
+    );
+
+    const response = await this.client.post(endpoint, serializedOptions);
+    return deserializer(response);
+  }
+
+  async unlock(workspaceId: string): Promise<Workspace> {
+    const endpoint = urljoin(
+      '/workspaces',
+      encodeURI(workspaceId),
+      '/actions/unlock'
+    );
+
+    const response = await this.client.post(endpoint);
+    return deserializer(response);
+  }
+
+  async forceUnlock(workspaceId: string): Promise<Workspace> {
+    const endpoint = urljoin(
+      '/workspaces',
+      encodeURI(workspaceId),
+      '/actions/force-unlock'
+    );
+
+    const response = await this.client.post(endpoint);
+    return deserializer(response);
   }
 }
