@@ -23,7 +23,7 @@ export interface Workspaces {
   read(organization: string, workspace: string): Promise<Workspace>;
 
   // ReadByID reads a workspace by its ID.
-  readByID(workspaceID: string): Promise<Workspace>;
+  readById(workspaceID: string): Promise<Workspace>;
 
   // Update settings of an existing workspace.
   update(
@@ -37,4 +37,10 @@ export interface Workspaces {
     workspaceId: string,
     options: WorkspaceUpdateOptions
   ): Promise<Workspace>;
+
+  // Delete a workspace by its name.
+  delete(organization: string, workspace: string): Promise<void>;
+
+  // DeleteByID deletes a workspace by its ID.
+  deleteById(workspaceiD: string): Promise<void>;
 }

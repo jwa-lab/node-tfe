@@ -120,4 +120,20 @@ export class Client implements IClient {
     // https://www.terraform.io/docs/cloud/api/index.html#json-api-documents
     return response.data;
   }
+  async delete(path: string): Promise<any> {
+    const config = {
+      method: 'delete' as const,
+      url: path,
+      headers: {
+        Authorization: 'Bearer ' + this.token,
+        Accept: 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+      },
+    };
+
+    const response = await this.HTTPClient(config);
+
+    // https://www.terraform.io/docs/cloud/api/index.html#json-api-documents
+    return response.data;
+  }
 }

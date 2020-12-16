@@ -71,7 +71,7 @@ export class Workspaces implements IWorkspaces {
     return deserializer(response);
   }
 
-  async readByID(workspaceId: string): Promise<Workspace> {
+  async readById(workspaceId: string): Promise<Workspace> {
     const endpoint = urljoin('/workspaces', encodeURI(workspaceId));
     const response = await this.client.get(endpoint);
     return deserializer(response);
@@ -107,5 +107,22 @@ export class Workspaces implements IWorkspaces {
 
     const response = await this.client.patch(endpoint, serializedOptions);
     return deserializer(response);
+  }
+
+  async delete(organization: string, workspace: string): Promise<void> {
+    const endpoint = urljoin(
+      '/organizations',
+      encodeURI(organization),
+      'workspaces',
+      encodeURI(workspace)
+    );
+
+    return this.client.delete(endpoint);
+  }
+
+  async deleteById(workspaceId: string): Promise<void> {
+    const endpoint = urljoin('/workspaces', encodeURI(workspaceId));
+
+    return this.client.delete(endpoint);
   }
 }
