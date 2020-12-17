@@ -8,6 +8,7 @@ import { UnauthorizedError } from './errors/UnauthorizedError';
 import { WorkspaceLockError } from './errors/WorkspaceLockError';
 import { Client as IClient } from './interfaces/Client';
 import { Config } from './interfaces/Config';
+import { Runs } from './runs';
 import { Workspaces } from './workspaces';
 
 const userAgent = 'node-tfe',
@@ -22,6 +23,7 @@ export class Client implements IClient {
   HTTPClient: AxiosInstance;
   Workspaces: Workspaces;
   ConfigurationVersions: ConfigurationVersions;
+  Runs: Runs;
 
   constructor(config: Config) {
     config.address =
@@ -73,6 +75,7 @@ export class Client implements IClient {
     // ADD endpoints
     this.Workspaces = new Workspaces(this);
     this.ConfigurationVersions = new ConfigurationVersions(this);
+    this.Runs = new Runs(this);
   }
 
   async get(path: string, params?: any): Promise<any> {
