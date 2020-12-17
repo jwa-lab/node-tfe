@@ -63,16 +63,18 @@ export class ConfigurationVersions implements IConfigurationVersions {
   }
 
   async upload(url: string, path: string): Promise<void> {
-    const isDir = await (await fs.stat(path)).isDirectory;
-    if (!isDir) {
+    const stats = await fs.stat(path);
+
+    if (!stats.isDirectory()) {
       throw new ConfigurationVersionPathError();
     }
     // TODO add error handler
     const readStream = tar.create(
       {
+        C: path,
         gzip: true,
       },
-      [path]
+      ['.']
     );
     await this.client.put(url, readStream);
   }

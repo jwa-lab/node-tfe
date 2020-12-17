@@ -118,7 +118,7 @@ export class Client implements IClient {
         Accept: 'application/vnd.api+json',
         'Content-Type': 'application/octet-stream',
       },
-      data: body || {},
+      data: body,
     };
 
     const response = await this.HTTPClient(config);
