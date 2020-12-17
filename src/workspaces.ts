@@ -18,10 +18,18 @@ import {
   WorkspaceUpdateOptions,
   WorkspaceUpdateOptionsSerializer,
 } from './interfaces/WorkspaceUpdateOptions';
+import { WorkspaceVariable } from './interfaces/WorkspaceVariable';
+import {
+  WorkspaceVariableCreateOptions,
+  WorkspaceVariableCreateOptionsSerializer,
+} from './interfaces/WorkspaceVariableCreateOptions';
+import {
+  WorkspaceVariableUpdateOptions,
+  WorkspaceVariableUpdateOptionsSerializer,
+} from './interfaces/WorkspaceVariableUpdateOptions';
 import { Client } from './tfe';
 import { deserializer } from './utils/deserializer';
 import { parsePagination } from './utils/parsePagination';
-
 export class Workspaces implements IWorkspaces {
   private client: Client;
 
@@ -168,5 +176,54 @@ export class Workspaces implements IWorkspaces {
 
     const response = await this.client.post(endpoint);
     return deserializer(response);
+  }
+
+  async createVariable(
+    workspaceId: string,
+    options: WorkspaceVariableCreateOptions
+  ): Promise<WorkspaceVariable> {
+    const endpoint = urljoin('/workspaces', encodeURI(workspaceId), 'vars');
+    const serializedOptions = await WorkspaceVariableCreateOptionsSerializer.serialize(
+      options
+    );
+
+    const response = await this.client.post(endpoint, serializedOptions);
+    return deserializer(response);
+  }
+
+  async listVariables(workspaceId: string): Promise<WorkspaceVariable[]> {
+    const endpoint = urljoin('/workspaces/', encodeURI(workspaceId), 'vars');
+    const response = await this.client.get(endpoint);
+    return deserializer(response);
+  }
+
+  async updateVariable(
+    workspaceId: string,
+    variableId: string,
+    options: WorkspaceVariableUpdateOptions
+  ): Promise<WorkspaceVariable> {
+    const endpoint = urljoin(
+      '/workspaces',
+      encodeURI(workspaceId),
+      'vars',
+      encodeURI(variableId)
+    );
+    const serializedOptions = await WorkspaceVariableUpdateOptionsSerializer.serialize(
+      options
+    );
+
+    const response = await this.client.patch(endpoint, serializedOptions);
+    return deserializer(response);
+  }
+
+  async deleteVariable(workspaceId: string, variableId: string): Promise<void> {
+    const endpoint = urljoin(
+      '/workspaces',
+      encodeURI(workspaceId),
+      'vars',
+      encodeURI(variableId)
+    );
+
+    return this.client.delete(endpoint);
   }
 }

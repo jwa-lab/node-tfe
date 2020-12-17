@@ -4,6 +4,9 @@ import { WorkspaceList } from './WorkspaceList';
 import { WorkspaceListOptions } from './WorkspaceListOptions';
 import { WorkspaceLockOptions } from './WorkspaceLockOptions';
 import { WorkspaceUpdateOptions } from './WorkspaceUpdateOptions';
+import { WorkspaceVariable } from './WorkspaceVariable';
+import { WorkspaceVariableCreateOptions } from './WorkspaceVariableCreateOptions';
+import { WorkspaceVariableUpdateOptions } from './WorkspaceVariableUpdateOptions';
 
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/workspaces.html
 
@@ -53,4 +56,23 @@ export interface Workspaces {
 
   // ForceUnlock a workspace by its ID.
   forceUnlock(workspaceId: string): Promise<Workspace>;
+
+  // createVariable is used to create a new workspace variable.
+  createVariable(
+    workspaceId: string,
+    options: WorkspaceVariableCreateOptions
+  ): Promise<WorkspaceVariable>;
+
+  // List all the variables within a workspace.
+  listVariables(workspaceId: string): Promise<WorkspaceVariable[]>;
+
+  // Update settings of an existing workspace variable.
+  updateVariable(
+    workspaceId: string,
+    variableId: string,
+    options: WorkspaceVariableUpdateOptions
+  ): Promise<WorkspaceVariable>;
+
+  // Delete a workspace variable.
+  deleteVariable(workspaceId: string, variableId: string): Promise<void>;
 }
