@@ -3,6 +3,7 @@ import internal from 'stream';
 import { Workspaces } from '../workspaces';
 import { ConfigurationVersions } from './ConfigurationVersions';
 import { Runs } from './Runs';
+import { StateVersions } from './StateVersions';
 
 export interface Client {
   baseURL: string;
@@ -16,4 +17,5 @@ export interface Client {
   Workspaces: Workspaces;
   ConfigurationVersions: ConfigurationVersions;
   Runs: Runs;
+  StateVerions: StateVersions;
 }

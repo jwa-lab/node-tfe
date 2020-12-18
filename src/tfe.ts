@@ -9,6 +9,7 @@ import { WorkspaceLockError } from './errors/WorkspaceLockError';
 import { Client as IClient } from './interfaces/Client';
 import { Config } from './interfaces/Config';
 import { Runs } from './runs';
+import { StateVersions } from './stateVersions';
 import { Workspaces } from './workspaces';
 
 const userAgent = 'node-tfe',
@@ -24,6 +25,7 @@ export class Client implements IClient {
   Workspaces: Workspaces;
   ConfigurationVersions: ConfigurationVersions;
   Runs: Runs;
+  StateVerions: StateVersions;
 
   constructor(config: Config) {
     config.address =
@@ -76,6 +78,7 @@ export class Client implements IClient {
     this.Workspaces = new Workspaces(this);
     this.ConfigurationVersions = new ConfigurationVersions(this);
     this.Runs = new Runs(this);
+    this.StateVerions = new StateVersions(this);
   }
 
   async get(path: string, params?: any): Promise<any> {
