@@ -25,10 +25,6 @@ non-breaking changes.
 
 Installation can be done with a normal `npm install node-tfe`:
 
-```
-go get -u github.com/hashicorp/go-tfe
-```
-
 ## Usage
 
 ```typescript
