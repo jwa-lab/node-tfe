@@ -1,4 +1,4 @@
-import { WorkspaceVariableCategory } from './WorkspaceVariableCategory';
+import { WorkspaceVariableCategory } from '../enums/WorkspaceVariableCategory';
 
 export interface WorkspaceVariable {
   type: 'vars';

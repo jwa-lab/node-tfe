@@ -1,10 +1,10 @@
+import { RunSource } from '../enums/RunSource';
+import { RunStatus } from '../enums/RunStatus';
 import { Apply } from './Apply';
 import { ConfigurationVersion } from './ConfigurationVersion';
 import { Plan } from './Plan';
 import { RunActions } from './RunActions';
 import { RunPermissions } from './RunPermissions';
-import { RunSource } from './RunSource';
-import { RunStatus } from './RunStatus';
 import { RunStatusTimestamps } from './RunStatusTimestamps';
 import { Workspace } from './Workspace';
 

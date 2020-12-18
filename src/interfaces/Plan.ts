@@ -1,4 +1,4 @@
-import { PlanStatus } from './PlanStatus';
+import { PlanStatus } from '../enums/PlanStatus';
 import { PlanStatusTimestamps } from './PlanStatusTimestamps';
 
 export interface Plan {

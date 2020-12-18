@@ -1,5 +1,5 @@
-import { ConfigurationSource } from './ConfigurationSource';
-import { ConfigurationStatus } from './ConfigurationStatus';
+import { ConfigurationSource } from '../enums/ConfigurationSource';
+import { ConfigurationStatus } from '../enums/ConfigurationStatus';
 import { CVStatusTimestamps } from './ConfigurationVersionsStatusTimestamps';
 
 export interface ConfigurationVersion {

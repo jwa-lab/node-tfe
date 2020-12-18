@@ -32,7 +32,7 @@ go get -u github.com/hashicorp/go-tfe
 ## Usage
 
 ```typescript
-import tfe from 'node-tfe';
+import Client from 'node-tfe';
 ```
 
 Construct a new TFE client, then use the various endpoints on the client to

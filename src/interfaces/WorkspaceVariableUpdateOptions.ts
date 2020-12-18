@@ -1,5 +1,5 @@
 import { Serializer } from 'jsonapi-serializer';
-import { WorkspaceVariableCategory } from './WorkspaceVariableCategory';
+import { WorkspaceVariableCategory } from '../enums/WorkspaceVariableCategory';
 
 export interface WorkspaceVariableUpdateOptions {
   key?: string;

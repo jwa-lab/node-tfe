@@ -2,33 +2,33 @@
 // Enterprise API supports.
 
 import urljoin from 'url-join';
-import { ListOptions } from './interfaces/ListOptions';
-import { Run } from './interfaces/Run';
+import { ListOptions } from '../interfaces/ListOptions';
+import { Run } from '../interfaces/Run';
 import {
   RunApplyOptions,
   RunApplyOptionsSerializer,
-} from './interfaces/RunApplyOptions';
+} from '../interfaces/RunApplyOptions';
 import {
   RunCancelOptions,
   RunCancelOptionsSerializer,
-} from './interfaces/RunCancelOptions';
+} from '../interfaces/RunCancelOptions';
 import {
   RunCreateOptions,
   RunCreateOptionsSerializer,
-} from './interfaces/RunCreateOptions';
+} from '../interfaces/RunCreateOptions';
 import {
   RunDiscardOptions,
   RunDiscardOptionsSerializer,
-} from './interfaces/RunDiscardOptions';
+} from '../interfaces/RunDiscardOptions';
 import {
   RunForceCancelOptions,
   RunForceCancelOptionsSerializer,
-} from './interfaces/RunForceCancelOptions';
-import { RunList } from './interfaces/RunList';
-import { Runs as IRuns } from './interfaces/runs';
-import { Client } from './tfe';
-import { deserializer } from './utils/deserializer';
-import { parsePagination } from './utils/parsePagination';
+} from '../interfaces/RunForceCancelOptions';
+import { RunList } from '../interfaces/RunList';
+import { Runs as IRuns } from '../interfaces/runs';
+import { Client } from '../tfe';
+import { deserializer } from '../utils/deserializer';
+import { parsePagination } from '../utils/parsePagination';
 
 export class Runs implements IRuns {
   private client: Client;

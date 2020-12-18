@@ -1,9 +1,9 @@
 import urljoin from 'url-join';
-import { StateVersion } from './interfaces/StateVersion';
-import { StateVersionCurrentOptions } from './interfaces/StateVersionCurrentOptions';
-import { StateVersions as IStateVersions } from './interfaces/StateVersions';
-import { Client } from './tfe';
-import { deserializer } from './utils/deserializer';
+import { StateVersion } from '../interfaces/StateVersion';
+import { StateVersionCurrentOptions } from '../interfaces/StateVersionCurrentOptions';
+import { StateVersions as IStateVersions } from '../interfaces/StateVersions';
+import { Client } from '../tfe';
+import { deserializer } from '../utils/deserializer';
 
 export class StateVersions implements IStateVersions {
   private client: Client;

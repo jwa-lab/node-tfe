@@ -2,14 +2,14 @@ import axios, { AxiosError, AxiosInstance } from 'axios';
 import qs from 'qs';
 import internal from 'stream';
 import urljoin from 'url-join';
-import { ConfigurationVersions } from './configurationVersions';
+import { ConfigurationVersions } from './endpoints/configurationVersions';
+import { Runs } from './endpoints/runs';
+import { StateVersions } from './endpoints/stateVersions';
 import { ResourceNotFoundError } from './errors/ResourceNotFoundError';
 import { UnauthorizedError } from './errors/UnauthorizedError';
 import { WorkspaceLockError } from './errors/WorkspaceLockError';
 import { Client as IClient } from './interfaces/Client';
 import { Config } from './interfaces/Config';
-import { Runs } from './runs';
-import { StateVersions } from './stateVersions';
 import { Workspaces } from './workspaces';
 
 const userAgent = 'node-tfe',

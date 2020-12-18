@@ -1,4 +1,4 @@
-import { ApplyStatus } from './ApplyStatus';
+import { ApplyStatus } from '../enums/ApplyStatus';
 import { ApplyStatusTimestamps } from './ApplyStatusTimestamps';
 
 export interface Apply {
