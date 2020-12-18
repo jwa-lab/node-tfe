@@ -1,5 +1,3 @@
-// TFE API docs: https://www.terraform.io/docs/enterprise/api/workspaces.html
-
 import { ConfigurationVersion } from './ConfigurationVersion';
 import { ConfigurationVersionCreateOptions } from './ConfigurationVersionCreateOptions';
 import { ConfigurationVersionList } from './ConfigurationVersionList';

@@ -1,5 +1,3 @@
-// Workspace represents a Terraform Enterprise workspace.
-
 import { WorkspaceVariableCategory } from './WorkspaceVariableCategory';
 
 export interface WorkspaceVariable {

@@ -1,4 +1,6 @@
-export class UnauthorizedError extends Error {
+import { NodeTfeError } from './NodeTfeError';
+
+export class UnauthorizedError extends NodeTfeError {
   constructor() {
     super('Unauthorized');
 

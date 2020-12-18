@@ -1,5 +1,3 @@
-// TFE API docs: https://www.terraform.io/docs/enterprise/api/workspaces.html
-
 import { ListOptions } from './ListOptions';
 import { Run } from './Run';
 import { RunApplyOptions } from './RunApplyOptions';

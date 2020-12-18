@@ -1,4 +1,3 @@
-// Workspace represents a Terraform Enterprise workspace.
 import { ConfigurationSource } from './ConfigurationSource';
 import { ConfigurationStatus } from './ConfigurationStatus';
 import { CVStatusTimestamps } from './ConfigurationVersionsStatusTimestamps';

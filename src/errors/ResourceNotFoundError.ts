@@ -1,4 +1,6 @@
-export class ResourceNotFoundError extends Error {
+import { NodeTfeError } from './NodeTfeError';
+
+export class ResourceNotFoundError extends NodeTfeError {
   constructor() {
     super('Resource not found');
 

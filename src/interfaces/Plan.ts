@@ -1,5 +1,3 @@
-// Workspace represents a Terraform Enterprise workspace.
-
 import { PlanStatus } from './PlanStatus';
 import { PlanStatusTimestamps } from './PlanStatusTimestamps';
 

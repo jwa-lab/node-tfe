@@ -1,15 +1,25 @@
 {
   "name": "node-tfe",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "A Typescript Client for Terraform Cloud/Enterprise V2 API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc --build",
-    "start:dev": "npx ts-node src/test.ts",
+    "build": "tsc",
+    "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "terraform-enterprise",
+    "tfe",
+    "sdk",
+    "terraform-cloud",
+    "cloud"
+  ],
+  "author": "Davide Talesco",
   "license": "ISC",
   "devDependencies": {
     "@types/axios": "^0.14.0",

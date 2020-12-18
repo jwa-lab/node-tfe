@@ -1,4 +1,6 @@
-export class ConfigurationVersionPathError extends Error {
+import { NodeTfeError } from './NodeTfeError';
+
+export class ConfigurationVersionPathError extends NodeTfeError {
   constructor() {
     super('path needs to be an existing directory');
 

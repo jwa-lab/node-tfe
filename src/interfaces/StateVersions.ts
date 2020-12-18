@@ -1,5 +1,3 @@
-// TFE API docs: https://www.terraform.io/docs/enterprise/api/workspaces.html
-
 import { StateVersion } from './StateVersion';
 import { StateVersionCurrentOptions } from './StateVersionCurrentOptions';
 

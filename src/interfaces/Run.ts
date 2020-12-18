@@ -1,5 +1,3 @@
-// Workspace represents a Terraform Enterprise workspace.
-
 import { Apply } from './Apply';
 import { ConfigurationVersion } from './ConfigurationVersion';
 import { Plan } from './Plan';

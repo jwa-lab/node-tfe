@@ -1,7 +1,5 @@
 import { ListOptions } from './ListOptions';
 
-// WorkspaceListOptions represents the options for listing workspaces.
-
 export interface WorkspaceListOptions extends ListOptions {
   // A search string (partial workspace name) used to filter the results.
   'search[name]'?: string;

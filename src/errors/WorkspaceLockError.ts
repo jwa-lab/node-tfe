@@ -1,4 +1,6 @@
-export class WorkspaceLockError extends Error {
+import { NodeTfeError } from './NodeTfeError';
+
+export class WorkspaceLockError extends NodeTfeError {
   constructor() {
     super(
       'Conflict: either ErrWorkspaceLocked | ErrWorkspaceNotLocked | ErrWorkspaceNotLocked'
