@@ -2,34 +2,34 @@
 // Enterprise API supports.
 
 import urljoin from 'url-join';
-import { Workspace } from './interfaces/Workspace';
+import { Workspace } from '../interfaces/Workspace';
 import {
   WorkspaceCreateOptions,
   WorkspaceCreateOptionsSerializer,
-} from './interfaces/WorkspaceCreateOptions';
-import { WorkspaceList } from './interfaces/WorkspaceList';
-import { WorkspaceListOptions } from './interfaces/WorkspaceListOptions';
+} from '../interfaces/WorkspaceCreateOptions';
+import { WorkspaceList } from '../interfaces/WorkspaceList';
+import { WorkspaceListOptions } from '../interfaces/WorkspaceListOptions';
 import {
   WorkspaceLockOptions,
   WorkspaceLockOptionsSerializer,
-} from './interfaces/WorkspaceLockOptions';
-import { Workspaces as IWorkspaces } from './interfaces/Workspaces';
+} from '../interfaces/WorkspaceLockOptions';
+import { Workspaces as IWorkspaces } from '../interfaces/Workspaces';
 import {
   WorkspaceUpdateOptions,
   WorkspaceUpdateOptionsSerializer,
-} from './interfaces/WorkspaceUpdateOptions';
-import { WorkspaceVariable } from './interfaces/WorkspaceVariable';
+} from '../interfaces/WorkspaceUpdateOptions';
+import { WorkspaceVariable } from '../interfaces/WorkspaceVariable';
 import {
   WorkspaceVariableCreateOptions,
   WorkspaceVariableCreateOptionsSerializer,
-} from './interfaces/WorkspaceVariableCreateOptions';
+} from '../interfaces/WorkspaceVariableCreateOptions';
 import {
   WorkspaceVariableUpdateOptions,
   WorkspaceVariableUpdateOptionsSerializer,
-} from './interfaces/WorkspaceVariableUpdateOptions';
-import { Client } from './tfe';
-import { deserializer } from './utils/deserializer';
-import { parsePagination } from './utils/parsePagination';
+} from '../interfaces/WorkspaceVariableUpdateOptions';
+import { Client } from '../tfe';
+import { deserializer } from '../utils/deserializer';
+import { parsePagination } from '../utils/parsePagination';
 export class Workspaces implements IWorkspaces {
   private client: Client;
 

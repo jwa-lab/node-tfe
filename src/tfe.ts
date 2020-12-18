@@ -5,12 +5,12 @@ import urljoin from 'url-join';
 import { ConfigurationVersions } from './endpoints/configurationVersions';
 import { Runs } from './endpoints/runs';
 import { StateVersions } from './endpoints/stateVersions';
+import { Workspaces } from './endpoints/workspaces';
 import { ResourceNotFoundError } from './errors/ResourceNotFoundError';
 import { UnauthorizedError } from './errors/UnauthorizedError';
 import { WorkspaceLockError } from './errors/WorkspaceLockError';
 import { Client as IClient } from './interfaces/Client';
 import { Config } from './interfaces/Config';
-import { Workspaces } from './workspaces';
 
 const userAgent = 'node-tfe',
   // DefaultAddress of Terraform Enterprise.

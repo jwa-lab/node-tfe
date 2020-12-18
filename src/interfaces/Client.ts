@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import internal from 'stream';
-import { Workspaces } from '../workspaces';
+import { Workspaces } from '../endpoints/workspaces';
 import { ConfigurationVersions } from './ConfigurationVersions';
 import { Runs } from './Runs';
 import { StateVersions } from './StateVersions';
