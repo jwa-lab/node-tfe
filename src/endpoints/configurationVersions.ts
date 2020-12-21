@@ -23,7 +23,7 @@ export class ConfigurationVersions implements IConfigurationVersions {
 
   async list(
     workspaceId: string,
-    options: ListOptions
+    options: ListOptions = {}
   ): Promise<ConfigurationVersionList> {
     const endpoint = urljoin(
       '/workspaces/',

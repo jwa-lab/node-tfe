@@ -9,7 +9,7 @@ import { RunList } from './RunList';
 
 export interface Runs {
   // List all the runs of the given workspace.
-  list(workspaceId: string, options: ListOptions): Promise<RunList>;
+  list(workspaceId: string, options?: ListOptions): Promise<RunList>;
 
   // Create a new run with the given options.
   create(options: RunCreateOptions): Promise<Run>;
@@ -18,14 +18,14 @@ export interface Runs {
   read(runId: string): Promise<Run>;
 
   // Apply a run by its ID.
-  apply(runId: string, options: RunApplyOptions): Promise<void>;
+  apply(runId: string, options?: RunApplyOptions): Promise<void>;
 
   // Cancel a run by its ID.
-  cancel(runId: string, options: RunCancelOptions): Promise<void>;
+  cancel(runId: string, options?: RunCancelOptions): Promise<void>;
 
   // Cancel a run by its ID.
-  forceCancel(runId: string, options: RunForceCancelOptions): Promise<void>;
+  forceCancel(runId: string, options?: RunForceCancelOptions): Promise<void>;
 
   // Discard a run by its ID.
-  discard(runId: string, options: RunDiscardOptions): Promise<void>;
+  discard(runId: string, options?: RunDiscardOptions): Promise<void>;
 }

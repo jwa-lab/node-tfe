@@ -7,7 +7,7 @@ export interface ConfigurationVersions {
   // List returns all configuration versions of a workspace.
   list(
     workspaceId: string,
-    options: ListOptions
+    options?: ListOptions
   ): Promise<ConfigurationVersionList>;
 
   // Create is used to create a new configuration version. The created

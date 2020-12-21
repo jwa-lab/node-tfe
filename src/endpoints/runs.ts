@@ -48,7 +48,7 @@ export class Runs implements IRuns {
     return deserializer(response);
   }
 
-  async list(workspaceId: string, options?: ListOptions): Promise<RunList> {
+  async list(workspaceId: string, options: ListOptions = {}): Promise<RunList> {
     const endpoint = urljoin('/workspaces/', encodeURI(workspaceId), '/runs');
     const response = await this.client.get(endpoint, options);
 
@@ -65,39 +65,40 @@ export class Runs implements IRuns {
     return deserializer(response);
   }
 
-  async apply(runId: string, options: RunApplyOptions): Promise<void> {
+  async apply(runId: string, options?: RunApplyOptions): Promise<void> {
     const endpoint = urljoin('/runs/', encodeURI(runId), '/actions/apply');
-    const serializedOptions = await RunApplyOptionsSerializer.serialize(
-      options
-    );
+    const serializedOptions = options
+      ? await RunApplyOptionsSerializer.serialize(options)
+      : {};
     await this.client.post(endpoint, serializedOptions);
   }
-  async cancel(runId: string, options: RunCancelOptions): Promise<void> {
+
+  async cancel(runId: string, options?: RunCancelOptions): Promise<void> {
     const endpoint = urljoin('/runs/', encodeURI(runId), '/actions/cancel');
-    const serializedOptions = await RunCancelOptionsSerializer.serialize(
-      options
-    );
+    const serializedOptions = options
+      ? await RunCancelOptionsSerializer.serialize(options)
+      : {};
     await this.client.post(endpoint, serializedOptions);
   }
   async forceCancel(
     runId: string,
-    options: RunForceCancelOptions
+    options?: RunForceCancelOptions
   ): Promise<void> {
     const endpoint = urljoin(
       '/runs/',
       encodeURI(runId),
       '/actions/force-cancel'
     );
-    const serializedOptions = await RunForceCancelOptionsSerializer.serialize(
-      options
-    );
+    const serializedOptions = options
+      ? await RunForceCancelOptionsSerializer.serialize(options)
+      : {};
     await this.client.post(endpoint, serializedOptions);
   }
-  async discard(runId: string, options: RunDiscardOptions): Promise<void> {
+  async discard(runId: string, options?: RunDiscardOptions): Promise<void> {
     const endpoint = urljoin('/runs/', encodeURI(runId), '/actions/discard');
-    const serializedOptions = await RunDiscardOptionsSerializer.serialize(
-      options
-    );
+    const serializedOptions = options
+      ? await RunDiscardOptionsSerializer.serialize(options)
+      : {};
     await this.client.post(endpoint, serializedOptions);
   }
 }

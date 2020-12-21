@@ -14,7 +14,7 @@ export class StateVersions implements IStateVersions {
 
   async currentWithOptions(
     workspaceId: string,
-    options: StateVersionCurrentOptions
+    options: StateVersionCurrentOptions = {}
   ): Promise<StateVersion> {
     const endpoint = urljoin(
       '/workspaces/',
