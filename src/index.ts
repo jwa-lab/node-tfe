@@ -1,5 +1,6 @@
 import { Client } from './tfe';
 export { ApplyStatus } from './enums/ApplyStatus';
+export { ConfigurationStatus } from './enums/ConfigurationStatus';
 export { PlanStatus } from './enums/PlanStatus';
 export { RunStatus } from './enums/RunStatus';
 export { WorkspaceVariableCategory } from './enums/WorkspaceVariableCategory';
