@@ -6,5 +6,5 @@ export interface Config {
   basePath?: string;
 
   // API token used to access the Terraform Enterprise API.
-  token?: string;
+  token: string;
 }
