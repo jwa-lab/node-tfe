@@ -6,6 +6,7 @@ import { ConfigurationVersions } from './endpoints/configurationVersions';
 import { Runs } from './endpoints/runs';
 import { StateVersions } from './endpoints/stateVersions';
 import { Workspaces } from './endpoints/workspaces';
+import { Types } from './enums/Types';
 import { ResourceNotFoundError } from './errors/ResourceNotFoundError';
 import { UnauthorizedError } from './errors/UnauthorizedError';
 import { WorkspaceLockError } from './errors/WorkspaceLockError';
@@ -63,7 +64,21 @@ export class Client implements IClient {
             throw new UnauthorizedError();
           }
           if (error.response?.status === 404) {
-            throw new ResourceNotFoundError();
+            let type;
+
+            if (error.request.path.includes('/workspaces/')) {
+              type = Types.workspace;
+            }
+            if (error.request.path.includes('/configuration-versions/')) {
+              type = Types.configurationVersion;
+            }
+            if (error.request.path.includes('/runs/')) {
+              type = Types.run;
+            }
+            if (error.request.path.includes('/current-state-version')) {
+              type = Types.stateVersion;
+            }
+            throw new ResourceNotFoundError(type);
           }
           if (error.response?.status === 409) {
             throw new WorkspaceLockError();

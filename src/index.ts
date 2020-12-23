@@ -3,6 +3,7 @@ export { ApplyStatus } from './enums/ApplyStatus';
 export { ConfigurationStatus } from './enums/ConfigurationStatus';
 export { PlanStatus } from './enums/PlanStatus';
 export { RunStatus } from './enums/RunStatus';
+export { Types } from './enums/Types';
 export { WorkspaceVariableCategory } from './enums/WorkspaceVariableCategory';
 export { ConfigurationVersionPathError } from './errors/ConfigurationVersionPathError';
 export { NodeTfeError } from './errors/NodeTfeError';
