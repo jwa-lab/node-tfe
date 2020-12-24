@@ -73,6 +73,7 @@ export class ConfigurationVersions implements IConfigurationVersions {
       {
         C: path,
         gzip: true,
+        portable: true,
       },
       ['.']
     );
