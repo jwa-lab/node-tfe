@@ -23,7 +23,6 @@
   "license": "ISC",
   "devDependencies": {
     "@types/axios": "^0.14.0",
-    "@types/jsonapi-serializer": "^3.6.3",
     "@types/node": "^14.14.10",
     "@types/tar": "^4.0.4",
     "@types/url-join": "^4.0.0",
@@ -37,6 +36,7 @@
     "typescript": "^4.1.2"
   },
   "dependencies": {
+    "@types/jsonapi-serializer": "^3.6.3",
     "axios": "^0.21.0",
     "jsonapi-serializer": "^3.6.6",
     "tar": "^6.0.5",
