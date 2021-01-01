@@ -21,4 +21,9 @@ export interface Workspace {
   terraformVersion: string;
   triggerPrefixes: string[];
   workingDirectory: string;
+  currentRun?: { id: string };
+  latestRun?: { id: string };
+  agentPool?: { id: string };
+  currentStateVersion?: { id: string };
+  lockedBy?: { id: string };
 }

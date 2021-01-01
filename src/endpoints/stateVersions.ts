@@ -3,7 +3,7 @@ import { StateVersion } from '../interfaces/StateVersion';
 import { StateVersionCurrentOptions } from '../interfaces/StateVersionCurrentOptions';
 import { StateVersions as IStateVersions } from '../interfaces/StateVersions';
 import { Client } from '../tfe';
-import { deserializer } from '../utils/deserializer';
+import { deserialize } from '../utils/deserializer';
 
 export class StateVersions implements IStateVersions {
   private client: Client;
@@ -23,7 +23,7 @@ export class StateVersions implements IStateVersions {
     );
     const response = await this.client.get(endpoint, options);
 
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async current(workspaceId: string): Promise<StateVersion> {
@@ -34,6 +34,6 @@ export class StateVersions implements IStateVersions {
     );
 
     const response = await this.client.get(endpoint);
-    return deserializer(response);
+    return deserialize(response);
   }
 }

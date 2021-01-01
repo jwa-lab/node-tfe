@@ -28,7 +28,7 @@ import {
   WorkspaceVariableUpdateOptionsSerializer,
 } from '../interfaces/WorkspaceVariableUpdateOptions';
 import { Client } from '../tfe';
-import { deserializer } from '../utils/deserializer';
+import { deserialize } from '../utils/deserializer';
 import { parsePagination } from '../utils/parsePagination';
 export class Workspaces implements IWorkspaces {
   private client: Client;
@@ -51,7 +51,7 @@ export class Workspaces implements IWorkspaces {
     );
 
     const response = await this.client.post(endpoint, serializedOptions);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async list(
@@ -67,7 +67,7 @@ export class Workspaces implements IWorkspaces {
 
     const workspaceList = {
       pagination: parsePagination(response.meta.pagination),
-      items: await deserializer(response),
+      items: await deserialize(response),
     };
     return workspaceList;
   }
@@ -80,13 +80,14 @@ export class Workspaces implements IWorkspaces {
       encodeURI(workspaceName)
     );
     const response = await this.client.get(endpoint);
-    return deserializer(response);
+    const deserializedResponse = await deserialize(response);
+    return deserializedResponse;
   }
 
   async readById(workspaceId: string): Promise<Workspace> {
     const endpoint = urljoin('/workspaces', encodeURI(workspaceId));
     const response = await this.client.get(endpoint);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async update(
@@ -105,7 +106,7 @@ export class Workspaces implements IWorkspaces {
     );
 
     const response = await this.client.patch(endpoint, serializedOptions);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async updateById(
@@ -118,7 +119,7 @@ export class Workspaces implements IWorkspaces {
     );
 
     const response = await this.client.patch(endpoint, serializedOptions);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async delete(organization: string, workspace: string): Promise<void> {
@@ -153,7 +154,7 @@ export class Workspaces implements IWorkspaces {
     );
 
     const response = await this.client.post(endpoint, serializedOptions);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async unlock(workspaceId: string): Promise<Workspace> {
@@ -164,7 +165,7 @@ export class Workspaces implements IWorkspaces {
     );
 
     const response = await this.client.post(endpoint);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async forceUnlock(workspaceId: string): Promise<Workspace> {
@@ -175,7 +176,7 @@ export class Workspaces implements IWorkspaces {
     );
 
     const response = await this.client.post(endpoint);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async createVariable(
@@ -188,13 +189,13 @@ export class Workspaces implements IWorkspaces {
     );
 
     const response = await this.client.post(endpoint, serializedOptions);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async listVariables(workspaceId: string): Promise<WorkspaceVariable[]> {
     const endpoint = urljoin('/workspaces/', encodeURI(workspaceId), 'vars');
     const response = await this.client.get(endpoint);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async updateVariable(
@@ -213,7 +214,7 @@ export class Workspaces implements IWorkspaces {
     );
 
     const response = await this.client.patch(endpoint, serializedOptions);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async deleteVariable(workspaceId: string, variableId: string): Promise<void> {

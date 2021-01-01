@@ -32,15 +32,6 @@ describe('readWorkspace', () => {
       name: workspaceName,
       autoApply: true,
     });
-    const configuration = await client.ConfigurationVersions.create(
-      workspace.id
-    );
-    await client.ConfigurationVersions.upload(
-      configuration.uploadUrl,
-      configurationPath
-    );
-    // wait for the condfiguration to be uploaded
-    await waitConfigurationIsUploaded(configuration.id);
 
     const w = await client.Workspaces.read(organizationName, workspaceName);
 
@@ -90,20 +81,7 @@ describe('readWorkspace', () => {
       workingDirectory: null,
     });
   });
-});
-
-describe('readWorkspace', () => {
-  const workspaceName = 'readWorkspace';
-  const configurationPath = join(__dirname, 'templates/random');
-
-  beforeEach(async () => {
-    await assertWorkspaceIsDeletedOrDeleteIt(workspaceName);
-  });
-  afterEach(async () => {
-    await assertWorkspaceIsDeletedOrDeleteIt(workspaceName);
-  });
-
-  it('should list the workspaces', async () => {
+  it('should populate workspace relationships on read workspace', async () => {
     const workspace = await client.Workspaces.create(organizationName, {
       name: workspaceName,
       autoApply: true,
@@ -118,53 +96,94 @@ describe('readWorkspace', () => {
     // wait for the condfiguration to be uploaded
     await waitConfigurationIsUploaded(configuration.id);
 
-    const w = await client.Workspaces.list(organizationName);
+    const w = await client.Workspaces.read(organizationName, workspaceName);
 
     expect(w).toMatchObject({
-      actions: { isDestroyable: true },
-      agentPool: null,
-      allowDestroyPlan: true,
-      autoApply: true,
-      autoDestroyAt: null,
-      createdAt: expect.anything(),
-      currentRun: null,
-      currentStateVersion: null,
-      description: null,
-      environment: 'default',
-      executionMode: 'remote',
-      fileTriggersEnabled: true,
-      id: expect.anything(),
-      latestChangeAt: expect.anything(),
-      latestRun: null,
-      locked: false,
-      name: 'readWorkspace',
-      operations: true,
-      permissions: {
-        canCreateStateVersions: true,
-        canDestroy: true,
-        canForceUnlock: true,
-        canLock: true,
-        canQueueApply: true,
-        canQueueDestroy: true,
-        canQueueRun: true,
-        canReadSettings: true,
-        canReadStateVersions: true,
-        canReadVariable: true,
-        canUnlock: true,
-        canUpdate: true,
-        canUpdateVariable: true,
-      },
-      queueAllRuns: false,
-      source: 'tfe-api',
-      sourceName: null,
-      sourceUrl: null,
-      speculativeEnabled: true,
-      terraformVersion: '0.14.3',
-      triggerPrefixes: [],
-      vcsRepo: null,
-      vcsRepoIdentifier: null,
-      workingDirectory: null,
+      currentRun: { id: expect.anything() },
+      latestRun: { id: expect.anything() },
     });
+  });
+});
+
+describe('listWorkspaces', () => {
+  const workspaceName = 'A-Workspace';
+  const anotherWokrspaceName = 'B-Workspace';
+  const configurationPath = join(__dirname, 'templates/random');
+
+  beforeEach(async () => {
+    await Promise.all(
+      [workspaceName, anotherWokrspaceName].map(
+        assertWorkspaceIsDeletedOrDeleteIt
+      )
+    );
+  });
+  afterEach(async () => {
+    await Promise.all(
+      [workspaceName, anotherWokrspaceName].map(
+        assertWorkspaceIsDeletedOrDeleteIt
+      )
+    );
+  });
+
+  it('should list the workspaces', async () => {
+    await Promise.all(
+      [workspaceName, anotherWokrspaceName].map((workspaceName) =>
+        client.Workspaces.create(organizationName, {
+          name: workspaceName,
+          autoApply: true,
+        })
+      )
+    );
+
+    const res = await client.Workspaces.list(organizationName);
+
+    expect(
+      res.items.sort((a: any, b: any) => a.name.localeCompare(b.name))
+    ).toMatchObject([
+      {
+        name: workspaceName,
+      },
+      {
+        name: anotherWokrspaceName,
+      },
+    ]);
+  });
+
+  it('should populate workspace relationships on list workspace', async () => {
+    await Promise.all(
+      [workspaceName, anotherWokrspaceName].map(async (workspaceName) => {
+        const workspace = await client.Workspaces.create(organizationName, {
+          name: workspaceName,
+          autoApply: true,
+        });
+        const configuration = await client.ConfigurationVersions.create(
+          workspace.id
+        );
+        await client.ConfigurationVersions.upload(
+          configuration.uploadUrl,
+          configurationPath
+        );
+        // wait for the condfiguration to be uploaded
+        await waitConfigurationIsUploaded(configuration.id);
+      })
+    );
+
+    const res = await client.Workspaces.list(organizationName);
+
+    expect(
+      res.items.sort((a: any, b: any) => a.name.localeCompare(b.name))
+    ).toMatchObject([
+      {
+        currentRun: { id: expect.anything() },
+        latestRun: { id: expect.anything() },
+        name: workspaceName,
+      },
+      {
+        currentRun: { id: expect.anything() },
+        latestRun: { id: expect.anything() },
+        name: anotherWokrspaceName,
+      },
+    ]);
   });
 });
 

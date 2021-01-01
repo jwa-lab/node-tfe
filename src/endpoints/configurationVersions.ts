@@ -11,7 +11,7 @@ import { ConfigurationVersionList } from '../interfaces/ConfigurationVersionList
 import { ConfigurationVersions as IConfigurationVersions } from '../interfaces/ConfigurationVersions';
 import { ListOptions } from '../interfaces/ListOptions';
 import { Client } from '../tfe';
-import { deserializer } from '../utils/deserializer';
+import { deserialize } from '../utils/deserializer';
 import { parsePagination } from '../utils/parsePagination';
 
 export class ConfigurationVersions implements IConfigurationVersions {
@@ -34,7 +34,7 @@ export class ConfigurationVersions implements IConfigurationVersions {
 
     const configurationVersionList = {
       pagination: parsePagination(response.meta.pagination),
-      items: await deserializer(response),
+      items: await deserialize(response),
     };
     return configurationVersionList;
   }
@@ -53,13 +53,13 @@ export class ConfigurationVersions implements IConfigurationVersions {
     );
 
     const response = await this.client.post(endpoint, serializedOptions);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async read(cvId: string): Promise<ConfigurationVersion> {
     const endpoint = urljoin('/configuration-versions/', encodeURI(cvId));
     const response = await this.client.get(endpoint);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async upload(url: string, path: string): Promise<void> {

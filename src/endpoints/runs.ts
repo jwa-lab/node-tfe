@@ -27,7 +27,7 @@ import {
 import { RunList } from '../interfaces/RunList';
 import { Runs as IRuns } from '../interfaces/runs';
 import { Client } from '../tfe';
-import { deserializer } from '../utils/deserializer';
+import { deserialize } from '../utils/deserializer';
 import { parsePagination } from '../utils/parsePagination';
 
 export class Runs implements IRuns {
@@ -45,7 +45,7 @@ export class Runs implements IRuns {
     );
 
     const response = await this.client.post(endpoint, serializedOptions);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async list(workspaceId: string, options: ListOptions = {}): Promise<RunList> {
@@ -54,7 +54,7 @@ export class Runs implements IRuns {
 
     const workspaceList = {
       pagination: parsePagination(response.meta.pagination),
-      items: await deserializer(response),
+      items: await deserialize(response),
     };
     return workspaceList;
   }
@@ -62,7 +62,7 @@ export class Runs implements IRuns {
   async read(runId: string): Promise<Run> {
     const endpoint = urljoin('/runs/', encodeURI(runId));
     const response = await this.client.get(endpoint);
-    return deserializer(response);
+    return deserialize(response);
   }
 
   async apply(runId: string, options?: RunApplyOptions): Promise<void> {
