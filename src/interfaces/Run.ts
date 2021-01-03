@@ -26,6 +26,6 @@ export interface Run {
   // Relations
   apply: Apply; //     `jsonapi:"relation,apply"`
   configurationVersion: ConfigurationVersion; // `jsonapi:"relation,configuration-version"`
-  Plan: Plan; //           `jsonapi:"relation,plan"`
-  Workspace: Workspace; //       `jsonapi:"relation,workspace"`
+  plan: Plan; //           `jsonapi:"relation,plan"`
+  workspace: Workspace; //       `jsonapi:"relation,workspace"`
 }
