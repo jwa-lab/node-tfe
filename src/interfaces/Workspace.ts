@@ -1,4 +1,6 @@
 // Workspace represents a Terraform Enterprise workspace.
+import { Run } from './Run';
+import { StateVersion } from './StateVersion';
 import { WorkspaceActions } from './WorkspaceActions';
 
 export interface Workspace {
@@ -21,9 +23,9 @@ export interface Workspace {
   terraformVersion: string;
   triggerPrefixes: string[];
   workingDirectory: string;
-  currentRun?: { id: string };
-  latestRun?: { id: string };
+  currentRun?: Run;
+  latestRun?: Run;
   agentPool?: { id: string };
-  currentStateVersion?: { id: string };
+  currentStateVersion?: StateVersion;
   lockedBy?: { id: string };
 }
