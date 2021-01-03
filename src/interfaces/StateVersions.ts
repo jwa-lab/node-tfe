@@ -1,5 +1,5 @@
+import { InlcudeRelatedResourcesOptions } from './InlcudeRelatedResourcesOptions';
 import { StateVersion } from './StateVersion';
-import { StateVersionCurrentOptions } from './StateVersionCurrentOptions';
 
 export interface StateVersions {
   // Current reads the latest available state from the given workspace.
@@ -8,6 +8,6 @@ export interface StateVersions {
   // CurrentWithOptions reads the latest available state from the given workspace using the options supplied
   currentWithOptions(
     workspaceId: string,
-    options: StateVersionCurrentOptions
+    options?: InlcudeRelatedResourcesOptions
   ): Promise<StateVersion>;
 }

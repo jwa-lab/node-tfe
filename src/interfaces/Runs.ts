@@ -1,3 +1,4 @@
+import { InlcudeRelatedResourcesOptions } from './InlcudeRelatedResourcesOptions';
 import { ListOptions } from './ListOptions';
 import { Run } from './Run';
 import { RunApplyOptions } from './RunApplyOptions';
@@ -15,7 +16,7 @@ export interface Runs {
   create(options: RunCreateOptions): Promise<Run>;
 
   // Read a run by its ID.
-  read(runId: string): Promise<Run>;
+  read(runId: string, options?: InlcudeRelatedResourcesOptions): Promise<Run>;
 
   // Apply a run by its ID.
   apply(runId: string, options?: RunApplyOptions): Promise<void>;

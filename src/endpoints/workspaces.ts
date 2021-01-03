@@ -2,6 +2,7 @@
 // Enterprise API supports.
 
 import urljoin from 'url-join';
+import { InlcudeRelatedResourcesOptions } from '../interfaces/InlcudeRelatedResourcesOptions';
 import { Workspace } from '../interfaces/Workspace';
 import {
   WorkspaceCreateOptions,
@@ -72,14 +73,18 @@ export class Workspaces implements IWorkspaces {
     return workspaceList;
   }
 
-  async read(organization: string, workspaceName: string): Promise<Workspace> {
+  async read(
+    organization: string,
+    workspaceName: string,
+    options?: InlcudeRelatedResourcesOptions
+  ): Promise<Workspace> {
     const endpoint = urljoin(
       '/organizations/',
       encodeURI(organization),
       '/workspaces',
       encodeURI(workspaceName)
     );
-    const response = await this.client.get(endpoint);
+    const response = await this.client.get(endpoint, options);
     const deserializedResponse = await deserialize(response);
     return deserializedResponse;
   }

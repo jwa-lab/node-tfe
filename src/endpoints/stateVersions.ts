@@ -1,6 +1,6 @@
 import urljoin from 'url-join';
+import { InlcudeRelatedResourcesOptions } from '../interfaces/InlcudeRelatedResourcesOptions';
 import { StateVersion } from '../interfaces/StateVersion';
-import { StateVersionCurrentOptions } from '../interfaces/StateVersionCurrentOptions';
 import { StateVersions as IStateVersions } from '../interfaces/StateVersions';
 import { Client } from '../tfe';
 import { deserialize } from '../utils/deserializer';
@@ -14,7 +14,7 @@ export class StateVersions implements IStateVersions {
 
   async currentWithOptions(
     workspaceId: string,
-    options: StateVersionCurrentOptions = {}
+    options?: InlcudeRelatedResourcesOptions
   ): Promise<StateVersion> {
     const endpoint = urljoin(
       '/workspaces/',

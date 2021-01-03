@@ -103,6 +103,29 @@ describe('readWorkspace', () => {
       latestRun: { id: expect.anything() },
     });
   });
+  it('should include the related resources', async () => {
+    const workspace = await client.Workspaces.create(organizationName, {
+      name: workspaceName,
+      autoApply: true,
+    });
+    const configuration = await client.ConfigurationVersions.create(
+      workspace.id
+    );
+    await client.ConfigurationVersions.upload(
+      configuration.uploadUrl,
+      configurationPath
+    );
+    // wait for the configuration to be uploaded
+    await waitConfigurationIsUploaded(configuration.id);
+
+    const w = await client.Workspaces.read(organizationName, workspaceName, {
+      include: 'current_run',
+    });
+
+    expect(w).toMatchObject({
+      currentRun: { id: expect.anything(), status: expect.anything() },
+    });
+  });
 });
 
 describe('listWorkspaces', () => {
@@ -182,6 +205,44 @@ describe('listWorkspaces', () => {
         currentRun: { id: expect.anything() },
         latestRun: { id: expect.anything() },
         name: anotherWokrspaceName,
+      },
+    ]);
+  });
+
+  it('should include the related resources', async () => {
+    await Promise.all(
+      [workspaceName, anotherWokrspaceName].map(async (workspaceName) => {
+        const workspace = await client.Workspaces.create(organizationName, {
+          name: workspaceName,
+          autoApply: true,
+        });
+
+        const configuration = await client.ConfigurationVersions.create(
+          workspace.id
+        );
+        await client.ConfigurationVersions.upload(
+          configuration.uploadUrl,
+          configurationPath
+        );
+        // wait for the condfiguration to be uploaded
+        await waitConfigurationIsUploaded(configuration.id);
+      })
+    );
+
+    const res = await client.Workspaces.list(organizationName, {
+      include: 'current_run',
+    });
+
+    expect(
+      res.items.sort((a: any, b: any) => a.name.localeCompare(b.name))
+    ).toMatchObject([
+      {
+        name: workspaceName,
+        currentRun: { id: expect.anything(), status: expect.anything() },
+      },
+      {
+        name: anotherWokrspaceName,
+        currentRun: { id: expect.anything(), status: expect.anything() },
       },
     ]);
   });

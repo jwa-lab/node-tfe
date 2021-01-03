@@ -1,3 +1,4 @@
+import { InlcudeRelatedResourcesOptions } from './InlcudeRelatedResourcesOptions';
 import { Workspace } from './Workspace';
 import { WorkspaceCreateOptions } from './WorkspaceCreateOptions';
 import { WorkspaceList } from './WorkspaceList';
@@ -24,7 +25,11 @@ export interface Workspaces {
   ): Promise<Workspace>;
 
   // Read a workspace by its name.
-  read(organization: string, workspace: string): Promise<Workspace>;
+  read(
+    organization: string,
+    workspace: string,
+    options?: InlcudeRelatedResourcesOptions
+  ): Promise<Workspace>;
 
   // ReadByID reads a workspace by its ID.
   readById(workspaceID: string): Promise<Workspace>;

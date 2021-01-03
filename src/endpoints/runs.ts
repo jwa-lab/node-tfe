@@ -2,6 +2,7 @@
 // Enterprise API supports.
 
 import urljoin from 'url-join';
+import { InlcudeRelatedResourcesOptions } from '../interfaces/InlcudeRelatedResourcesOptions';
 import { ListOptions } from '../interfaces/ListOptions';
 import { Run } from '../interfaces/Run';
 import {
@@ -59,9 +60,12 @@ export class Runs implements IRuns {
     return workspaceList;
   }
 
-  async read(runId: string): Promise<Run> {
+  async read(
+    runId: string,
+    options?: InlcudeRelatedResourcesOptions
+  ): Promise<Run> {
     const endpoint = urljoin('/runs/', encodeURI(runId));
-    const response = await this.client.get(endpoint);
+    const response = await this.client.get(endpoint, options);
     return deserialize(response);
   }
 
