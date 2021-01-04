@@ -1,5 +1,4 @@
 import { InlcudeRelatedResourcesOptions } from './InlcudeRelatedResourcesOptions';
-import { ListOptions } from './ListOptions';
 import { Run } from './Run';
 import { RunApplyOptions } from './RunApplyOptions';
 import { RunCancelOptions } from './RunCancelOptions';
@@ -7,10 +6,11 @@ import { RunCreateOptions } from './RunCreateOptions';
 import { RunDiscardOptions } from './RunDiscardOptions';
 import { RunForceCancelOptions } from './RunForceCancelOptions';
 import { RunList } from './RunList';
+import { RunListOptions } from './RunListOptions';
 
 export interface Runs {
   // List all the runs of the given workspace.
-  list(workspaceId: string, options?: ListOptions): Promise<RunList>;
+  list(workspaceId: string, options?: RunListOptions): Promise<RunList>;
 
   // Create a new run with the given options.
   create(options: RunCreateOptions): Promise<Run>;

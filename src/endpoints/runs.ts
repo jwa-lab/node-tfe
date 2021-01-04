@@ -3,7 +3,6 @@
 
 import urljoin from 'url-join';
 import { InlcudeRelatedResourcesOptions } from '../interfaces/InlcudeRelatedResourcesOptions';
-import { ListOptions } from '../interfaces/ListOptions';
 import { Run } from '../interfaces/Run';
 import {
   RunApplyOptions,
@@ -26,6 +25,7 @@ import {
   RunForceCancelOptionsSerializer,
 } from '../interfaces/RunForceCancelOptions';
 import { RunList } from '../interfaces/RunList';
+import { RunListOptions } from '../interfaces/RunListOptions';
 import { Runs as IRuns } from '../interfaces/runs';
 import { Client } from '../tfe';
 import { deserialize } from '../utils/deserializer';
@@ -49,7 +49,10 @@ export class Runs implements IRuns {
     return deserialize(response);
   }
 
-  async list(workspaceId: string, options: ListOptions = {}): Promise<RunList> {
+  async list(
+    workspaceId: string,
+    options: RunListOptions = {}
+  ): Promise<RunList> {
     const endpoint = urljoin('/workspaces/', encodeURI(workspaceId), '/runs');
     const response = await this.client.get(endpoint, options);
 
