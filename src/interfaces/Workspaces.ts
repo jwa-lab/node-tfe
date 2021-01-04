@@ -32,7 +32,10 @@ export interface Workspaces {
   ): Promise<Workspace>;
 
   // ReadByID reads a workspace by its ID.
-  readById(workspaceID: string): Promise<Workspace>;
+  readById(
+    workspaceID: string,
+    options?: InlcudeRelatedResourcesOptions
+  ): Promise<Workspace>;
 
   // Update settings of an existing workspace.
   update(

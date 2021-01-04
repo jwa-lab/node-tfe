@@ -89,9 +89,12 @@ export class Workspaces implements IWorkspaces {
     return deserializedResponse;
   }
 
-  async readById(workspaceId: string): Promise<Workspace> {
+  async readById(
+    workspaceId: string,
+    options?: InlcudeRelatedResourcesOptions
+  ): Promise<Workspace> {
     const endpoint = urljoin('/workspaces', encodeURI(workspaceId));
-    const response = await this.client.get(endpoint);
+    const response = await this.client.get(endpoint, options);
     return deserialize(response);
   }
 
