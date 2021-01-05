@@ -19,5 +19,6 @@ export { StateVersion } from './interfaces/StateVersion';
 export { StateVersionOutput } from './interfaces/StateVersionOutput';
 export { Workspace } from './interfaces/Workspace';
 export { WorkspaceVariable } from './interfaces/WorkspaceVariable';
+export { runIsActive } from './utils/runIsActive';
 
 export default Client;
