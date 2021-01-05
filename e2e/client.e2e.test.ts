@@ -4,6 +4,9 @@ import { join } from 'path';
 import Client, {
   ConfigurationStatus,
   ResourceNotFoundError,
+  Run,
+  RunStatus,
+  WorkspaceVariableCategory,
 } from '../src/index';
 
 config({ path: join(__dirname, '.env.e2e') });
@@ -28,7 +31,7 @@ describe('readWorkspace', () => {
   });
 
   it('should read the workspace', async () => {
-    const workspace = await client.Workspaces.create(organizationName, {
+    await client.Workspaces.create(organizationName, {
       name: workspaceName,
       autoApply: true,
     });
@@ -248,6 +251,52 @@ describe('listWorkspaces', () => {
   });
 });
 
+describe('createVariable', () => {
+  const workspaceName = 'createVariable';
+  const configurationPath = join(
+    __dirname,
+    'templates/random-complex-variable'
+  );
+
+  beforeEach(async () => {
+    await assertWorkspaceIsDeletedOrDeleteIt(workspaceName);
+  });
+  afterEach(async () => {
+    await assertWorkspaceIsDeletedOrDeleteIt(workspaceName);
+  });
+  it('should create complex variable', async () => {
+    const workspace = await client.Workspaces.create(organizationName, {
+      name: workspaceName,
+      autoApply: true,
+    });
+    const randoms = [
+      { id: 1, length: 2 },
+      { id: 2, length: 2 },
+    ];
+
+    await client.Workspaces.createVariable(workspace.id, {
+      key: 'randoms',
+      // convert : into =
+      value: JSON.stringify(randoms).replace(/:/g, '='),
+      category: WorkspaceVariableCategory.terraform,
+      hcl: true,
+    });
+
+    const configuration = await client.ConfigurationVersions.create(
+      workspace.id,
+      { autoQueueRuns: true }
+    );
+
+    await client.ConfigurationVersions.upload(
+      configuration.uploadUrl,
+      configurationPath
+    );
+
+    await waitConfigurationIsUploaded(configuration.id);
+    await waitRunStatusToBe(workspace.id, RunStatus.applied);
+  });
+});
+
 async function assertWorkspaceIsDeletedOrDeleteIt(name: string) {
   try {
     await client.Workspaces.delete(organizationName, name);
@@ -266,6 +315,24 @@ async function waitConfigurationIsUploaded(configurationId: string) {
     console.log('waiting configuration to upload');
     await wait(500);
     configuration = await client.ConfigurationVersions.read(configurationId);
+  }
+}
+
+async function waitRunStatusToBe(workspaceId: string, status: string) {
+  const workspace = await client.Workspaces.readById(workspaceId, {
+    include: 'current_run,current_run.configuration_version',
+  });
+
+  let run = workspace.currentRun as Run;
+  run = await client.Runs.read(run.id, {
+    include: 'plan,apply',
+  });
+  while (run.status !== status) {
+    console.log(`waiting runStatus to be ${status}`);
+    await wait(500);
+    run = await client.Runs.read(run.id, {
+      include: 'plan,apply',
+    });
   }
 }
 
