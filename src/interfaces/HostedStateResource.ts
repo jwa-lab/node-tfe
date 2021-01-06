@@ -1,7 +1,7 @@
 export interface HostedStateResource {
-  count: number;
-  module: string;
+  mode: string;
+  type: string;
   name: string;
   provider: string;
-  type: string;
+  instances: { attributes: any; sensitive_attributes: any[] }[];
 }
