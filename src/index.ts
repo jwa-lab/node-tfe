@@ -13,6 +13,8 @@ export { WorkspaceLockError } from './errors/WorkspaceLockError';
 export { Apply } from './interfaces/Apply';
 export { Config } from './interfaces/Config';
 export { ConfigurationVersion } from './interfaces/ConfigurationVersion';
+export { HostedState } from './interfaces/HostedState';
+export { HostedStateResource } from './interfaces/HostedStateResource';
 export { Plan } from './interfaces/Plan';
 export { Run } from './interfaces/Run';
 export { StateVersion } from './interfaces/StateVersion';
@@ -21,5 +23,4 @@ export { Workspace } from './interfaces/Workspace';
 export { WorkspaceVariable } from './interfaces/WorkspaceVariable';
 export { runIsActive } from './utils/runIsActive';
 export { runIsErrored } from './utils/runIsErrored';
-
 export default Client;

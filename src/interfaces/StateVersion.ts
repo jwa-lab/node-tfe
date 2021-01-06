@@ -1,5 +1,6 @@
 // Workspace represents a Terraform Enterprise workspace.
 
+import { HostedStateResource } from './HostedStateResource';
 import { Run } from './Run';
 import { StateVersionOutput } from './StateVersionOutput';
 
@@ -10,13 +11,7 @@ export interface StateVersion {
   serial: number; //   `jsonapi:"attr,serial"`
   vcsCommitSHA: string; //  `jsonapi:"attr,vcs-commit-sha"`
   vcsCommitURL: string; //  `jsonapi:"attr,vcs-commit-url"`
-  resources?: {
-    count: number;
-    module: string;
-    nam: string;
-    provider: string;
-    type: string;
-  }[];
+  resources?: HostedStateResource[];
   // Relations
   run: Run; //        `jsonapi:"relation,run"`
   outputs: StateVersionOutput[]; // `jsonapi:"relation,outputs"`
