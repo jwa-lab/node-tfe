@@ -77,7 +77,7 @@ describe('readWorkspace', () => {
       sourceName: null,
       sourceUrl: null,
       speculativeEnabled: true,
-      terraformVersion: '0.14.3',
+      terraformVersion: '0.14.4',
       triggerPrefixes: [],
       vcsRepo: null,
       vcsRepoIdentifier: null,
@@ -133,19 +133,20 @@ describe('readWorkspace', () => {
 
 describe('listWorkspaces', () => {
   const workspaceName = 'A-Workspace';
-  const anotherWokrspaceName = 'B-Workspace';
+  const anotherWorkspaceName = 'B-Workspace';
+  const yetAnotherWorkspaceName = 'A-Workspace-2';
   const configurationPath = join(__dirname, 'templates/random');
 
   beforeEach(async () => {
     await Promise.all(
-      [workspaceName, anotherWokrspaceName].map(
+      [workspaceName, anotherWorkspaceName, yetAnotherWorkspaceName].map(
         assertWorkspaceIsDeletedOrDeleteIt
       )
     );
   });
   afterEach(async () => {
     await Promise.all(
-      [workspaceName, anotherWokrspaceName].map(
+      [workspaceName, anotherWorkspaceName, yetAnotherWorkspaceName].map(
         assertWorkspaceIsDeletedOrDeleteIt
       )
     );
@@ -153,7 +154,7 @@ describe('listWorkspaces', () => {
 
   it('should list the workspaces', async () => {
     await Promise.all(
-      [workspaceName, anotherWokrspaceName].map((workspaceName) =>
+      [workspaceName, anotherWorkspaceName].map((workspaceName) =>
         client.Workspaces.create(organizationName, {
           name: workspaceName,
           autoApply: true,
@@ -170,14 +171,62 @@ describe('listWorkspaces', () => {
         name: workspaceName,
       },
       {
-        name: anotherWokrspaceName,
+        name: anotherWorkspaceName,
+      },
+    ]);
+  });
+
+  it('should list only the workspaces that match the queried name', async () => {
+    await Promise.all(
+      [workspaceName, anotherWorkspaceName].map((workspaceName) =>
+        client.Workspaces.create(organizationName, {
+          name: workspaceName,
+          autoApply: true,
+        })
+      )
+    );
+
+    const res = await client.Workspaces.list(organizationName, {
+      'search[name]': workspaceName,
+    });
+
+    expect(res.items).toMatchObject([
+      {
+        name: workspaceName,
+      },
+    ]);
+  });
+
+  it('should support wildcard when when filtering workspaces by name', async () => {
+    await Promise.all(
+      [workspaceName, anotherWorkspaceName, yetAnotherWorkspaceName].map(
+        (workspaceName) =>
+          client.Workspaces.create(organizationName, {
+            name: workspaceName,
+            autoApply: true,
+          })
+      )
+    );
+
+    const res = await client.Workspaces.list(organizationName, {
+      'search[name]': 'A-',
+    });
+
+    expect(
+      res.items.sort((a: any, b: any) => a.name.localeCompare(b.name))
+    ).toMatchObject([
+      {
+        name: workspaceName,
+      },
+      {
+        name: yetAnotherWorkspaceName,
       },
     ]);
   });
 
   it('should populate workspace relationships on list workspace', async () => {
     await Promise.all(
-      [workspaceName, anotherWokrspaceName].map(async (workspaceName) => {
+      [workspaceName, anotherWorkspaceName].map(async (workspaceName) => {
         const workspace = await client.Workspaces.create(organizationName, {
           name: workspaceName,
           autoApply: true,
@@ -207,14 +256,14 @@ describe('listWorkspaces', () => {
       {
         currentRun: { id: expect.anything() },
         latestRun: { id: expect.anything() },
-        name: anotherWokrspaceName,
+        name: anotherWorkspaceName,
       },
     ]);
   });
 
   it('should include the related resources', async () => {
     await Promise.all(
-      [workspaceName, anotherWokrspaceName].map(async (workspaceName) => {
+      [workspaceName, anotherWorkspaceName].map(async (workspaceName) => {
         const workspace = await client.Workspaces.create(organizationName, {
           name: workspaceName,
           autoApply: true,
@@ -244,7 +293,7 @@ describe('listWorkspaces', () => {
         currentRun: { id: expect.anything(), status: expect.anything() },
       },
       {
-        name: anotherWokrspaceName,
+        name: anotherWorkspaceName,
         currentRun: { id: expect.anything(), status: expect.anything() },
       },
     ]);
