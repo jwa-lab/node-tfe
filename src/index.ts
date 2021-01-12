@@ -20,7 +20,11 @@ export { Run } from './interfaces/Run';
 export { StateVersion } from './interfaces/StateVersion';
 export { StateVersionOutput } from './interfaces/StateVersionOutput';
 export { Workspace } from './interfaces/Workspace';
+export { WorkspaceList } from './interfaces/WorkspaceList';
+export { WorkspaceListOptions } from './interfaces/WorkspaceListOptions';
 export { WorkspaceVariable } from './interfaces/WorkspaceVariable';
+export { WorkspaceVariableCreateOptions } from './interfaces/WorkspaceVariableCreateOptions';
 export { runIsActive } from './utils/runIsActive';
 export { runIsErrored } from './utils/runIsErrored';
+
 export default Client;

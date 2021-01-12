@@ -129,6 +129,35 @@ describe('readWorkspace', () => {
       currentRun: { id: expect.anything(), status: expect.anything() },
     });
   });
+  it('should include current_run even after the run has completed', async () => {
+    const workspace = await client.Workspaces.create(organizationName, {
+      name: workspaceName,
+      autoApply: true,
+    });
+    const configuration = await client.ConfigurationVersions.create(
+      workspace.id
+    );
+    await client.ConfigurationVersions.upload(
+      configuration.uploadUrl,
+      configurationPath
+    );
+    // wait for the condfiguration to be uploaded
+    await waitConfigurationIsUploaded(configuration.id);
+
+    let w = await client.Workspaces.read(organizationName, workspaceName, {
+      include: 'current_run',
+    });
+
+    await waitRunStatusToBe(w.currentRun?.id as string, RunStatus.applied);
+
+    w = await client.Workspaces.read(organizationName, workspaceName, {
+      include: 'current_run',
+    });
+
+    expect(w).toMatchObject({
+      currentRun: { id: expect.anything() },
+    });
+  });
 });
 
 describe('listWorkspaces', () => {
@@ -342,7 +371,12 @@ describe('createVariable', () => {
     );
 
     await waitConfigurationIsUploaded(configuration.id);
-    await waitRunStatusToBe(workspace.id, RunStatus.applied);
+
+    const w = await client.Workspaces.read(organizationName, workspaceName, {
+      include: 'current_run',
+    });
+
+    await waitRunStatusToBe(w.currentRun?.id as string, RunStatus.applied);
   });
 });
 
@@ -367,13 +401,9 @@ async function waitConfigurationIsUploaded(configurationId: string) {
   }
 }
 
-async function waitRunStatusToBe(workspaceId: string, status: string) {
-  const workspace = await client.Workspaces.readById(workspaceId, {
-    include: 'current_run,current_run.configuration_version',
-  });
-
-  let run = workspace.currentRun as Run;
-  run = await client.Runs.read(run.id, {
+async function waitRunStatusToBe(runId: string, status: string) {
+  let run: Run;
+  run = await client.Runs.read(runId, {
     include: 'plan,apply',
   });
   while (run.status !== status) {
