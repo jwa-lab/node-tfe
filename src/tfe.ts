@@ -26,7 +26,7 @@ export class Client implements IClient {
   Workspaces: Workspaces;
   ConfigurationVersions: ConfigurationVersions;
   Runs: Runs;
-  StateVerions: StateVersions;
+  StateVersions: StateVersions;
 
   constructor(config: Config) {
     config.address =
@@ -93,7 +93,7 @@ export class Client implements IClient {
     this.Workspaces = new Workspaces(this);
     this.ConfigurationVersions = new ConfigurationVersions(this);
     this.Runs = new Runs(this);
-    this.StateVerions = new StateVersions(this);
+    this.StateVersions = new StateVersions(this);
   }
 
   async get(path: string, params?: any): Promise<any> {

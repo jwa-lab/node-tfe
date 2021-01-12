@@ -17,5 +17,5 @@ export interface Client {
   Workspaces: Workspaces;
   ConfigurationVersions: ConfigurationVersions;
   Runs: Runs;
-  StateVerions: StateVersions;
+  StateVersions: StateVersions;
 }
