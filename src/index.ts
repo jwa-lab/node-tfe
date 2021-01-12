@@ -15,6 +15,7 @@ export { Config } from './interfaces/Config';
 export { ConfigurationVersion } from './interfaces/ConfigurationVersion';
 export { HostedState } from './interfaces/HostedState';
 export { HostedStateResource } from './interfaces/HostedStateResource';
+export { ListOptions } from './interfaces/ListOptions';
 export { Plan } from './interfaces/Plan';
 export { Run } from './interfaces/Run';
 export { StateVersion } from './interfaces/StateVersion';
