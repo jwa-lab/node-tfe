@@ -59,6 +59,7 @@ export interface WorkspaceCreateOptions {
   // root of your repository and is typically set to a subdirectory matching the
   // environment when multiple environments exist within the same repository.
   workingDirectory?: string; // `jsonapi:"attr,working-directory,omitempty"`
+  sourceName?: string;
 }
 
 export const WorkspaceCreateOptionsSerializer = new Serializer('workspaces', {
@@ -75,5 +76,6 @@ export const WorkspaceCreateOptionsSerializer = new Serializer('workspaces', {
     'terraformVersion',
     'triggerPrefixes',
     'workingDirectory',
+    'sourceName',
   ],
 });

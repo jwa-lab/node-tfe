@@ -19,6 +19,28 @@ const client = new Client({
   token,
 });
 
+describe('createWorkspace', () => {
+  const workspaceName = 'createWorkspace';
+  beforeEach(async () => {
+    await assertWorkspaceIsDeletedOrDeleteIt(workspaceName);
+  });
+  afterEach(async () => {
+    await assertWorkspaceIsDeletedOrDeleteIt(workspaceName);
+  });
+  it('should create the workspace', async () => {
+    await client.Workspaces.create(organizationName, {
+      name: workspaceName,
+      autoApply: true,
+      sourceName: 'some external value',
+    });
+
+    const w = await client.Workspaces.read(organizationName, workspaceName);
+    expect(w).toMatchObject({
+      id: expect.anything(),
+      sourceName: 'some external value',
+    });
+  });
+});
 describe('readWorkspace', () => {
   const workspaceName = 'readWorkspace';
   const configurationPath = join(__dirname, 'templates/random');
