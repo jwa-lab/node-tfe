@@ -28,4 +28,5 @@ export interface Workspace {
   agentPool?: { id: string };
   currentStateVersion?: StateVersion;
   lockedBy?: { id: string };
+  sourceName?: string;
 }
