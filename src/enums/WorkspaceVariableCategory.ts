@@ -1,4 +1,4 @@
-export const enum WorkspaceVariableCategory {
+export enum WorkspaceVariableCategory {
   terraform = 'terraform',
   env = 'env',
 }

@@ -1,4 +1,4 @@
-export const enum PlanStatus {
+export enum PlanStatus {
   canceled = 'canceled',
   created = 'created',
   errored = 'errored',

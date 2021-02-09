@@ -1,4 +1,4 @@
-export const enum ApplyStatus {
+export enum ApplyStatus {
   canceled = 'canceled',
   created = 'created',
   errored = 'errored',

@@ -1,4 +1,4 @@
-export const enum RunSource {
+export enum RunSource {
   api = 'tfe-api',
   configurationVersion = 'tfe-configuration-version',
   ui = 'tfe-ui',

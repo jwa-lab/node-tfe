@@ -1,4 +1,4 @@
-export const enum ConfigurationSource {
+export enum ConfigurationSource {
   api = 'tfe-api',
   bitbucket = 'bitbucket',
   github = 'github',

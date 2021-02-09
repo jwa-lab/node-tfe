@@ -1,4 +1,4 @@
-export const enum RunStatus {
+export enum RunStatus {
   applied = 'applied',
   applyQueued = 'apply_queued',
   applying = 'applying',
