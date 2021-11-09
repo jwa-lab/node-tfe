@@ -7,7 +7,6 @@ on:
 
 jobs:
   build:
-
     # Run on latest version of ubuntu
     runs-on: ubuntu-latest
 
@@ -26,11 +25,6 @@ jobs:
         registry-url: https://registry.npmjs.org/
     # clean install of your projects' deps. We use "npm ci" to avoid package lock changes
     - run: npm ci
-    # # set up git since we will later push to the repo
-    # - run: git config --global user.name "Amir-Benkoula"
-    # - run: git config --global user.email "amir.benkoula@jwalab.com"
-    # upgrade npm version in package.json to the tag used in the release.
-    # - run: npm version ${{ github.event.release.tag_name }}
     # build the project
     - run: npm run build
     # run tests just in case
@@ -40,8 +34,3 @@ jobs:
       env:
         # Use a token to publish to NPM. See below for how to set it up
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    # # push the version changes to GitHub
-    # - run: git push
-    #   env:
-    #     # The secret is passed automatically. Nothing to configure.
-    #     github-token: ${{ secrets.GITHUB_TOKEN }}
