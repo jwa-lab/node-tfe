@@ -60,5 +60,8 @@
   "bugs": {
     "url": "https://github.com/Amir-Benkoula/node-tfe/issues"
   },
-  "homepage": "https://github.com/Amir-Benkoula/node-tfe#readme"
+  "homepage": "https://github.com/Amir-Benkoula/node-tfe#readme",
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
+  }
 }
