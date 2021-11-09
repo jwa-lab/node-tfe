@@ -1,6 +1,6 @@
 {
-  "name": "node-tfe2",
-  "version": "0.0.5",
+  "name": "tfeamir2",
+  "version": "0.0.1",
   "description": "A Typescript Client for Terraform Cloud/Enterprise V2 API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -53,5 +53,13 @@
     "tar": "^6.0.5",
     "ts-japi": "^1.3.1",
     "url-join": "^4.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amir-Benkoula/node-tfe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Amir-Benkoula/node-tfe/issues"
+  },
+  "homepage": "https://github.com/Amir-Benkoula/node-tfe#readme"
 }
