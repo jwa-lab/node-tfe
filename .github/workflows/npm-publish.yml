@@ -30,7 +30,7 @@ jobs:
     # - run: git config --global user.name "Amir-Benkoula"
     # - run: git config --global user.email "amir.benkoula@jwalab.com"
     # upgrade npm version in package.json to the tag used in the release.
-    - run: npm version ${{ github.event.release.tag_name }}
+    # - run: npm version ${{ github.event.release.tag_name }}
     # build the project
     - run: npm run build
     # run tests just in case
