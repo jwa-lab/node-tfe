@@ -26,7 +26,7 @@ import {
 } from '../interfaces/RunForceCancelOptions';
 import { RunList } from '../interfaces/RunList';
 import { RunListOptions } from '../interfaces/RunListOptions';
-import { Runs as IRuns } from '../interfaces/runs';
+import { Runs as IRuns } from '../interfaces/Runs';
 import { Client } from '../tfe';
 import { deserialize } from '../utils/deserializer';
 import { parsePagination } from '../utils/parsePagination';
