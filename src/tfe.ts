@@ -183,7 +183,7 @@ export class Client implements IClient {
       },
       data: body
     };
-    console.log(config)
+
     const response = await this.HTTPClient(config);
 
     // https://www.terraform.io/docs/cloud/api/index.html#json-api-documents
