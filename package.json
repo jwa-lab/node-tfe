@@ -1,5 +1,5 @@
 {
-  "name": "tfeamir2",
+  "name": "node-tfe",
   "version": "0.0.1",
   "description": "A Typescript Client for Terraform Cloud/Enterprise V2 API",
   "main": "dist/index.js",

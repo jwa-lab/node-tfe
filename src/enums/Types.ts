@@ -3,4 +3,5 @@ export enum Types {
   configurationVersion = 'configurationVersion',
   run = 'run',
   stateVersion = 'stateVersion',
+  tags = 'tags'
 }

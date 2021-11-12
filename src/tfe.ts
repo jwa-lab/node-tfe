@@ -5,6 +5,7 @@ import urljoin from 'url-join';
 import { ConfigurationVersions } from './endpoints/configurationVersions';
 import { Runs } from './endpoints/runs';
 import { StateVersions } from './endpoints/stateVersions';
+import { Tags } from './endpoints/tags';
 import { Workspaces } from './endpoints/workspaces';
 import { Types } from './enums/Types';
 import { ResourceNotFoundError } from './errors/ResourceNotFoundError';
@@ -27,6 +28,7 @@ export class Client implements IClient {
   ConfigurationVersions: ConfigurationVersions;
   Runs: Runs;
   StateVersions: StateVersions;
+  Tags: Tags;
 
   constructor(config: Config) {
     config.address =
@@ -78,6 +80,9 @@ export class Client implements IClient {
             if (error.request.path.includes('/current-state-version')) {
               type = Types.stateVersion;
             }
+            if (error.request.path.includes('/tags')) {
+              type = Types.tags;
+            }
             throw new ResourceNotFoundError(type);
           }
           if (error.response?.status === 409) {
@@ -94,6 +99,7 @@ export class Client implements IClient {
     this.ConfigurationVersions = new ConfigurationVersions(this);
     this.Runs = new Runs(this);
     this.StateVersions = new StateVersions(this);
+    this.Tags = new Tags(this);
   }
 
   async get(path: string, params?: any): Promise<any> {
@@ -166,7 +172,7 @@ export class Client implements IClient {
     return response.data;
   }
 
-  async delete(path: string): Promise<any> {
+  async delete(path: string, body?: any): Promise<any> {
     const config = {
       method: 'delete' as const,
       url: path,
@@ -175,8 +181,9 @@ export class Client implements IClient {
         Accept: 'application/vnd.api+json',
         'Content-Type': 'application/vnd.api+json',
       },
+      data: body
     };
-
+    console.log(config)
     const response = await this.HTTPClient(config);
 
     // https://www.terraform.io/docs/cloud/api/index.html#json-api-documents
