@@ -1,11 +1,8 @@
 import { Serializer } from 'jsonapi-serializer';
 
 export interface TagsDeleteOptions {
-    type: string,
-    id: string
-
+    type: string, // `jsonapi:"attr,type"`
+    id: string // `jsonapi:"attr,id"`
 }
 
-export const TagsDeleteOptionsSerializer = new Serializer('tags', {
-  attributes: []
-});
+export const TagsDeleteOptionsSerializer = new Serializer('tags', {});

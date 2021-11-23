@@ -5,7 +5,7 @@ import urljoin from 'url-join';
 import { ConfigurationVersions } from './endpoints/configurationVersions';
 import { Runs } from './endpoints/runs';
 import { StateVersions } from './endpoints/stateVersions';
-import { Tags } from './endpoints/tags';
+import { OrganizationTags } from './endpoints/tags';
 import { Workspaces } from './endpoints/workspaces';
 import { Types } from './enums/Types';
 import { ResourceNotFoundError } from './errors/ResourceNotFoundError';
@@ -28,7 +28,7 @@ export class Client implements IClient {
   ConfigurationVersions: ConfigurationVersions;
   Runs: Runs;
   StateVersions: StateVersions;
-  Tags: Tags;
+  Tags: OrganizationTags;
 
   constructor(config: Config) {
     config.address =
@@ -99,7 +99,7 @@ export class Client implements IClient {
     this.ConfigurationVersions = new ConfigurationVersions(this);
     this.Runs = new Runs(this);
     this.StateVersions = new StateVersions(this);
-    this.Tags = new Tags(this);
+    this.Tags = new OrganizationTags(this);
   }
 
   async get(path: string, params?: any): Promise<any> {
@@ -183,9 +183,7 @@ export class Client implements IClient {
       },
       data: body
     };
-
     const response = await this.HTTPClient(config);
-
     // https://www.terraform.io/docs/cloud/api/index.html#json-api-documents
     return response.data;
   }

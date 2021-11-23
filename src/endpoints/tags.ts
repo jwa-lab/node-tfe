@@ -1,11 +1,13 @@
 import urljoin from "url-join";
-import { Tags as ITags } from "../interfaces/Tags"
+import { OrganizationTags as IOrganizationTags } from "../interfaces/Tags"
 import { TagsDeleteOptionsSerializer } from "../interfaces/TagsDeleteOptions";
 import { TagList } from "../interfaces/TagsList";
+import { TagsListOptions } from "../interfaces/TagsListOptions";
 import { Client } from '../tfe';
 import { deserialize } from '../utils/deserializer';
+import { parsePagination } from "../utils/parsePagination";
 
-export class Tags implements ITags {
+export class OrganizationTags implements IOrganizationTags {
     private client: Client;
 
     constructor(client: Client) {
@@ -14,25 +16,27 @@ export class Tags implements ITags {
 
     async list(
         organization: string,
+        options?: TagsListOptions,
     ): Promise<TagList> {
         const endpoint = urljoin(
             '/organizations/',
             encodeURI(organization),
             '/tags'
         );
-        const response = await this.client.get(endpoint);
+        const response = await this.client.get(endpoint, options);
 
         const tagList = {
-            items: await deserialize(response),
+            pagination: parsePagination(response.meta.pagination),
+            items: await deserialize(response)
         };
         return tagList;
     }
 
     async delete(organization: string, options: any): Promise<void> {
-        const endpoint = urljoin('/workspaces/', encodeURI(organization), '/tags');
+        const endpoint = urljoin('/organizations/', encodeURI(organization), '/tags');
         const serializedOptions = await TagsDeleteOptionsSerializer.serialize(
-            options
-          );
+            [options]
+        );
         await this.client.delete(endpoint, serializedOptions);
   }
 }

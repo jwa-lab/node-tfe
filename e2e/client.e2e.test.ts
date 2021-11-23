@@ -402,6 +402,22 @@ describe('createVariable', () => {
   });
 });
 
+describe('listTags', () => {
+  it('should lsit the tags', async () => {
+    const w = await client.Tags.list(organizationName);
+    const item = w.items[0];
+    expect(item).toHaveProperty('name')
+  });
+});
+
+describe('destroyTag',  () => {
+    it('should delete a tag', async () => {
+        const tags = await client.Tags.list(organizationName);
+        const response = await client.Tags.delete('jwalab', {type: "tags", id: "tag-xPfX5s5839Sjfghj"});
+        expect(response).toBe(null);
+    });
+});
+
 async function assertWorkspaceIsDeletedOrDeleteIt(name: string) {
   try {
     await client.Workspaces.delete(organizationName, name);

@@ -1,12 +1,13 @@
+import { TagsDeleteOptions } from "./TagsDeleteOptions";
 import { TagList } from "./TagsList";
 
-export interface Tags {
+export interface OrganizationTags {
     list(
         organization: string
     ):Promise<TagList>
 
     delete(
         organization: string,
-        options: any
+        options: TagsDeleteOptions
     ): Promise<void>;
 }
