@@ -412,9 +412,7 @@ describe('listTags', () => {
 
 describe('destroyTag',  () => {
     it('should delete a tag', async () => {
-        const tags = await client.Tags.list(organizationName);
-        const response = await client.Tags.delete('jwalab', {type: "tags", id: "tag-xPfX5s5839Sjfghj"});
-        expect(response).toBe(null);
+        await client.Tags.delete('jwalab', {type: "tags", id: "tag-xPfX5s5839Sjfghj"});
     });
 });
 
