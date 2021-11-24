@@ -35,7 +35,7 @@ export class OrganizationTags implements IOrganizationTags {
     async delete(organization: string, options: any): Promise<void> {
         const endpoint = urljoin('/organizations/', encodeURI(organization), '/tags');
         const serializedOptions = await TagsDeleteOptionsSerializer.serialize(
-            [options]
+            options
         );
         await this.client.delete(endpoint, serializedOptions);
   }

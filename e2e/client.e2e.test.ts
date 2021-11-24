@@ -8,6 +8,7 @@ import Client, {
   RunStatus,
   WorkspaceVariableCategory,
 } from '../src/index';
+import { TagsAddOptionsSerializer } from '../src/interfaces/TagsDeleteOptions';
 
 config({ path: join(__dirname, '.env.e2e') });
 
@@ -403,18 +404,79 @@ describe('createVariable', () => {
 });
 
 describe('listTags', () => {
-  it('should lsit the tags', async () => {
+  it('should list the tags', async () => {
     const w = await client.Tags.list(organizationName);
-    const item = w.items[0];
-    expect(item).toHaveProperty('name')
+    expect(w).toMatchObject({
+      pagination: {
+        currentPage: 1,
+        previousPage: undefined,
+        nextPage: null,
+        totalPages: expect.anything(),
+        totalCount: expect.anything()
+      },
+      items: expect.anything()
+    })
   });
 });
 
 describe('destroyTag',  () => {
-    it('should delete a tag', async () => {
-        await client.Tags.delete('jwalab', {type: "tags", id: "tag-xPfX5s5839Sjfghj"});
+  const workspaceName = 'test1';
+  beforeEach(async () => {
+    //create a workspace
+    const workspace = await client.Workspaces.create(organizationName, {
+      name: workspaceName,
+      autoApply: true,
+      sourceName: 'some external value',
     });
+    const testTags = await client.Tags.list(organizationName);
+    //add two tags to this workspace
+    addTagsToWorkspace(`/workspaces/${workspace.id}/relationships/tags`,[
+      {type: 'tags', id: testTags.items[0].id},
+      {type: 'tags', id: testTags.items[1].id}
+    ]);
+    //expects the workspace to have two tags
+    expect(await client.get(`/workspaces/${workspace.id}/relationships/tags`)).toMatchObject({
+      data: [
+        {
+          id: expect.anything(),
+          type: 'tags',
+          attributes: expect.anything(),
+          relationships: expect.anything()
+        },
+        {
+          id: expect.anything(),
+          type: 'tags',
+          attributes: expect.anything(),
+          relationships: expect.anything()
+        }
+      ],
+      links: expect.anything(),
+      meta: expect.anything()
+    });
+  });
+  afterEach(async () => {
+    await assertWorkspaceIsDeletedOrDeleteIt(workspaceName);
+  });
+  it('should delete a tag', async () => {
+    //destroy the two tags added to workspace
+    const workspace = await client.Workspaces.read(organizationName,workspaceName);
+    const t = (await client.Tags.list(organizationName)).items;
+    await client.Tags.delete('jwalab-test', [{ type: 'tags', id: t[0].id }, { type: 'tags', id: t[1].id }]);
+    //expect the workspace to have no tags
+    expect(await client.get(`/workspaces/${workspace.id}/relationships/tags`)).toMatchObject({
+      data: [],
+      links: expect.anything(),
+      meta: expect.anything()
+    });
+  });
 });
+
+async function addTagsToWorkspace(endpoint: string, options: any){
+  const serializedOptions = await TagsAddOptionsSerializer.serialize(
+    options
+);
+  await client.post(endpoint, serializedOptions);
+}
 
 async function assertWorkspaceIsDeletedOrDeleteIt(name: string) {
   try {
