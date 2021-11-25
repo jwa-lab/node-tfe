@@ -403,25 +403,56 @@ describe('createVariable', () => {
   });
 });
 
+//To make the tests you must have an environment with a workspace created and containing existing tags
 describe('listTags', () => {
-  it('should list the tags', async () => {
+  it('should list all the tags of the organization', async () => {
     const w = await client.Tags.list(organizationName);
     expect(w).toMatchObject({
       pagination: {
         currentPage: 1,
         previousPage: undefined,
         nextPage: null,
-        totalPages: expect.anything(),
-        totalCount: expect.anything()
+        totalPages: 1,
+        totalCount: 2
       },
-      items: expect.anything()
+      items: [
+        {
+          name: 'tag0',
+          instanceCount: 1,
+          id: expect.anything(),
+          organization: expect.anything(),
+          links: expect.anything()
+        },
+        {
+          name: 'tag1',
+          instanceCount: 1,
+          id: expect.anything(),
+          organization: expect.anything(),
+          links: expect.anything()
+        }
+      ]
     })
+  });
+  it('should list only the tags that matched the queried name', async () => {
+    const w = await client.Tags.list(organizationName, {
+      'q': 'tag0',
+    });
+    expect(w.items).toMatchObject([
+      {
+        name: 'tag0',
+        instanceCount: 1,
+        id: expect.anything(),
+        organization: expect.anything(),
+        links: expect.anything()
+      }
+    ])
   });
 });
 
 describe('destroyTag',  () => {
-  const workspaceName = 'test1';
+  const workspaceName = 'test';
   beforeEach(async () => {
+    await assertWorkspaceIsDeletedOrDeleteIt(workspaceName);
     //create a workspace
     const workspace = await client.Workspaces.create(organizationName, {
       name: workspaceName,
@@ -429,22 +460,22 @@ describe('destroyTag',  () => {
       sourceName: 'some external value',
     });
     const testTags = await client.Tags.list(organizationName);
-    //add two tags to this workspace
-    addTagsToWorkspace(`/workspaces/${workspace.id}/relationships/tags`,[
+    // add two tags to this workspace
+    await addTagsToWorkspace(`/workspaces/${workspace.id}/relationships/tags`,[
       {type: 'tags', id: testTags.items[0].id},
       {type: 'tags', id: testTags.items[1].id}
     ]);
-    //expects the workspace to have two tags
+    // expects the workspace to have two tags
     expect(await client.get(`/workspaces/${workspace.id}/relationships/tags`)).toMatchObject({
       data: [
         {
-          id: expect.anything(),
+          id: testTags.items[0].id,
           type: 'tags',
           attributes: expect.anything(),
           relationships: expect.anything()
         },
         {
-          id: expect.anything(),
+          id: testTags.items[1].id,
           type: 'tags',
           attributes: expect.anything(),
           relationships: expect.anything()
