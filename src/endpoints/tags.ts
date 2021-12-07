@@ -1,5 +1,6 @@
 import urljoin from "url-join";
 import { OrganizationTags as IOrganizationTags } from "../interfaces/Tags"
+import { TagsAddWorkspacesOptionsSerializer } from "../interfaces/TagsAddWorkspacesOptions";
 import { TagsDeleteOptionsSerializer } from "../interfaces/TagsDeleteOptions";
 import { TagList } from "../interfaces/TagsList";
 import { TagsListOptions } from "../interfaces/TagsListOptions";
@@ -33,10 +34,27 @@ export class OrganizationTags implements IOrganizationTags {
     }
 
     async delete(organization: string, options: any): Promise<void> {
-        const endpoint = urljoin('/organizations/', encodeURI(organization), '/tags');
+        const endpoint = urljoin(
+            '/organizations/', 
+            encodeURI(organization), 
+            '/tags'
+        );
         const serializedOptions = await TagsDeleteOptionsSerializer.serialize(
             options
         );
         await this.client.delete(endpoint, serializedOptions);
   }
+
+    async addWorkspacesToTag(tag_id: string, options: any): Promise<void> {
+        const endpoint = urljoin(
+            '/tags/', 
+            encodeURI(tag_id), 
+            '/relationships/',
+            '/workspaces'
+        );
+        const serializedOptions = await TagsAddWorkspacesOptionsSerializer.serialize(
+            options
+        );
+        await this.client.post(endpoint, serializedOptions);
+    }
 }

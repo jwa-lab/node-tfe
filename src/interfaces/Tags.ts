@@ -1,3 +1,4 @@
+import { TagsAddWorkspacesOptions } from "./TagsAddWorkspacesOptions";
 import { TagsDeleteOptions } from "./TagsDeleteOptions";
 import { TagList } from "./TagsList";
 import { TagsListOptions } from "./TagsListOptions";
@@ -12,4 +13,9 @@ export interface OrganizationTags {
         organization: string,
         options: TagsDeleteOptions[]
     ): Promise<void>;
+
+    addWorkspacesToTag(
+        tag_id: string,
+        options?: TagsAddWorkspacesOptions[]
+    ):Promise<void>;
 }

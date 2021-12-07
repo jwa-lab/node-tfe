@@ -502,6 +502,52 @@ describe('destroyTag',  () => {
   });
 });
 
+
+describe('addWorkspacesToTag', () => {
+  const workspaceNames = ['test0','test1','test2'];
+  beforeEach(async () => {
+    for(const name of workspaceNames){
+      await assertWorkspaceIsDeletedOrDeleteIt(name);
+    }
+  });
+  afterEach(async () => {
+    for(const name of workspaceNames){
+      await assertWorkspaceIsDeletedOrDeleteIt(name);
+    }
+  });
+  it('should add a workspace to a tag', async () => {
+    const testTags = await client.Tags.list(organizationName);
+    const responses = [];
+    for(const name in workspaceNames){
+      responses.push( await client.Workspaces.create(organizationName, {
+        name: workspaceNames[name],
+        autoApply: true,
+        sourceName: 'some external value',
+      }));
+    }
+    await client.Tags.addWorkspacesToTag(testTags.items[0].id, [
+      { type: 'workspaces', id: responses[0].id},
+      { type: 'workspaces', id: responses[1].id},
+      { type: 'workspaces', id: responses[2].id},
+    ]);
+
+    for(const workspaces in responses){
+      expect(await client.get(`/workspaces/${responses[workspaces].id}/relationships/tags`)).toMatchObject({
+        data: [
+          {
+            id: testTags.items[0].id,
+            type: 'tags',
+            attributes: expect.anything(),
+            relationships: expect.anything()
+          }
+        ],
+        links: expect.anything(),
+        meta: expect.anything()
+      });
+    }
+  })
+});
+
 async function addTagsToWorkspace(endpoint: string, options: any){
   const serializedOptions = await TagsAddOptionsSerializer.serialize(
     options
