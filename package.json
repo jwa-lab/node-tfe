@@ -49,10 +49,7 @@
     "@types/jsonapi-serializer": "^3.6.3",
     "axios": "^0.21.1",
     "jsonapi-serializer": "^3.6.6",
-<<<<<<< HEAD
     "qs": "^6.10.1",
-=======
->>>>>>> package.json fix
     "tar": "^6.0.5",
     "ts-japi": "^1.3.1",
     "url-join": "^4.0.1"
