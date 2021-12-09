@@ -7,7 +7,6 @@ on:
 
 jobs:
   build:
-
     # Run on latest version of ubuntu
     runs-on: ubuntu-latest
 
