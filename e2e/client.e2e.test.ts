@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import env from 'env-var';
 import { join } from 'path';
+import { Serializer } from 'jsonapi-serializer';
 import Client, {
   ConfigurationStatus,
   ResourceNotFoundError,
@@ -42,6 +43,7 @@ describe('createWorkspace', () => {
     });
   });
 });
+
 describe('readWorkspace', () => {
   const workspaceName = 'readWorkspace';
   const configurationPath = join(__dirname, 'templates/random');
@@ -100,7 +102,7 @@ describe('readWorkspace', () => {
       sourceName: null,
       sourceUrl: null,
       speculativeEnabled: true,
-      terraformVersion: '0.14.4',
+      terraformVersion: '1.1.0',
       triggerPrefixes: [],
       vcsRepo: null,
       vcsRepoIdentifier: null,
@@ -215,7 +217,7 @@ describe('listWorkspaces', () => {
     );
 
     const res = await client.Workspaces.list(organizationName);
-
+    
     expect(
       res.items.sort((a: any, b: any) => a.name.localeCompare(b.name))
     ).toMatchObject([
@@ -241,7 +243,7 @@ describe('listWorkspaces', () => {
     const res = await client.Workspaces.list(organizationName, {
       'search[name]': workspaceName,
     });
-
+    
     expect(res.items).toMatchObject([
       {
         name: workspaceName,
@@ -403,8 +405,15 @@ describe('createVariable', () => {
   });
 });
 
-//To make the tests you must have an environment with a workspace created and containing existing tags
+// //For the following tests you must have an environment with a workspace created containing existing tags ("tag0","tag1","tag2")
+
 describe('listTags', () => {
+  beforeEach(async () => {
+    await assertTagExistsOrCreateIt(["tag0","tag1","tag2"], "listTagTest")
+  });
+  afterEach(async () => {
+    await assertWorkspaceIsDeletedOrDeleteIt("listTagTest");
+  });
   it('should list all the tags of the organization', async () => {
     const w = await client.Tags.list(organizationName);
     expect(w).toMatchObject({
@@ -413,7 +422,7 @@ describe('listTags', () => {
         previousPage: undefined,
         nextPage: null,
         totalPages: 1,
-        totalCount: 2
+        totalCount: 3
       },
       items: [
         {
@@ -425,6 +434,13 @@ describe('listTags', () => {
         },
         {
           name: 'tag1',
+          instanceCount: 1,
+          id: expect.anything(),
+          organization: expect.anything(),
+          links: expect.anything()
+        },
+        {
+          name: 'tag2',
           instanceCount: 1,
           id: expect.anything(),
           organization: expect.anything(),
@@ -450,22 +466,11 @@ describe('listTags', () => {
 });
 
 describe('destroyTag',  () => {
-  const workspaceName = 'test';
+  const workspaceName = 'destroyTagTest';
   beforeEach(async () => {
-    await assertWorkspaceIsDeletedOrDeleteIt(workspaceName);
-    //create a workspace
-    const workspace = await client.Workspaces.create(organizationName, {
-      name: workspaceName,
-      autoApply: true,
-      sourceName: 'some external value',
-    });
+    const workspace = await assertTagExistsOrCreateIt(["tag0","tag1"], workspaceName)
     const testTags = await client.Tags.list(organizationName);
-    // add two tags to this workspace
-    await addTagsToWorkspace(`/workspaces/${workspace.id}/relationships/tags`,[
-      {type: 'tags', id: testTags.items[0].id},
-      {type: 'tags', id: testTags.items[1].id}
-    ]);
-    // expects the workspace to have two tags
+
     expect(await client.get(`/workspaces/${workspace.id}/relationships/tags`)).toMatchObject({
       data: [
         {
@@ -489,11 +494,10 @@ describe('destroyTag',  () => {
     await assertWorkspaceIsDeletedOrDeleteIt(workspaceName);
   });
   it('should delete a tag', async () => {
-    //destroy the two tags added to workspace
     const workspace = await client.Workspaces.read(organizationName,workspaceName);
     const t = (await client.Tags.list(organizationName)).items;
     await client.Tags.delete('jwalab-test', [{ type: 'tags', id: t[0].id }, { type: 'tags', id: t[1].id }]);
-    //expect the workspace to have no tags
+
     expect(await client.get(`/workspaces/${workspace.id}/relationships/tags`)).toMatchObject({
       data: [],
       links: expect.anything(),
@@ -508,18 +512,20 @@ describe('addWorkspacesToTag', () => {
   beforeEach(async () => {
     for(const name of workspaceNames){
       await assertWorkspaceIsDeletedOrDeleteIt(name);
+      await assertTagExistsOrCreateIt(["tag0"], "addWorkSpaceToTagTest")
     }
   });
   afterEach(async () => {
     for(const name of workspaceNames){
       await assertWorkspaceIsDeletedOrDeleteIt(name);
+      await assertWorkspaceIsDeletedOrDeleteIt("addWorkSpaceToTagTest");
     }
   });
   it('should add a workspace to a tag', async () => {
     const testTags = await client.Tags.list(organizationName);
     const responses = [];
     for(const name in workspaceNames){
-      responses.push( await client.Workspaces.create(organizationName, {
+      responses.push(await client.Workspaces.create(organizationName, {
         name: workspaceNames[name],
         autoApply: true,
         sourceName: 'some external value',
@@ -553,6 +559,23 @@ async function addTagsToWorkspace(endpoint: string, options: any){
     options
 );
   await client.post(endpoint, serializedOptions);
+}
+
+async function assertTagExistsOrCreateIt(tagNames: string[], workspaceName: string){
+  const options = new Serializer('tags', {attributes: ['name']});
+  await assertWorkspaceIsDeletedOrDeleteIt(workspaceName);
+  const workspace = await client.Workspaces.create(organizationName, {
+    name: workspaceName,
+    autoApply: true,
+    sourceName: 'some external value',
+  });
+
+  for(const tag in tagNames){
+    const serializedOptions = options.serialize([{type: 'tags', name: tagNames[tag]}])
+    await client.post(`workspaces/${workspace.id}/relationships/tags`, serializedOptions);
+  }
+
+  return workspace;
 }
 
 async function assertWorkspaceIsDeletedOrDeleteIt(name: string) {
