@@ -1,6 +1,6 @@
 {
   "name": "node-tfe",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "A Typescript Client for Terraform Cloud/Enterprise V2 API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

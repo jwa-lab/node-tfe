@@ -405,8 +405,6 @@ describe('createVariable', () => {
   });
 });
 
-// //For the following tests you must have an environment with a workspace created containing existing tags ("tag0","tag1","tag2")
-
 describe('listTags', () => {
   beforeEach(async () => {
     await assertTagExistsOrCreateIt(["tag0","tag1","tag2"], "listTagTest")

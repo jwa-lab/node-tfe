@@ -55,6 +55,7 @@ Only the following [Terraform Cloud/Enterprise V2 API](https://www.terraform.io/
 - [ConfigurationVersions](https://www.terraform.io/docs/cloud/api/configuration-versions.html)
 - [Runs](https://www.terraform.io/docs/cloud/api/run.html)
 - [StateVersions](https://www.terraform.io/docs/cloud/api/state-versions.html)
+- [Organizationtags](https://www.terraform.io/docs/cloud/api/organization-tags.html)
 
 ## Issues and Contributing
 
