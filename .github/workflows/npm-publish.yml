@@ -31,7 +31,7 @@ jobs:
     # run tests just in case
     # - run: npm test:e2e
     - name: Run ESLint
-      run: eslint . --ext .js,.jsx,.ts,.tsx
+      run: npm run lint
     # publish to NPM -> there is one caveat, continue reading for the fix
     - run: npm publish
       env:

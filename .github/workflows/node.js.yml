@@ -33,4 +33,4 @@ jobs:
     #     token: ${{ secrets.TFE_TOKEN }}
     #     organizationName: ${{ secrets.ORGANIZATIONNAME }}
     - name: Run ESLint
-      run: eslint . --ext .js,.jsx,.ts,.tsx
+      run: npm run lint
