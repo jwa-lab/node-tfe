@@ -1,0 +1,33 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # "ref" specifies the branch to check out.
+        # "github.event.release.target_commitish" is a global variable and specifies the branch the release targeted
+        ref: ${{ github.event.release.target_commitish }}
+    - name: Use Node.js 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+        cache: 'npm'
+    - name: Upgrade NPM
+      run: npm install -g npm
+    - run: npm install
+    - run: npm run test:e2e
+      env:
+        token: ${{ secrets.TFE_TOKEN }}
+        organizationName: 'jwalab-test'

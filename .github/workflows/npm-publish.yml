@@ -28,7 +28,7 @@ jobs:
       run: npm install -g npm
     - run: npm install
     # run tests just in case
-    - run: npm test
+    - run: npm test:e2e
     # publish to NPM -> there is one caveat, continue reading for the fix
     - run: npm publish
       env:
