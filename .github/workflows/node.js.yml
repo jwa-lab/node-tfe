@@ -27,7 +27,9 @@ jobs:
     - name: Upgrade NPM
       run: npm install -g npm
     - run: npm install
-    - run: npm run test:e2e
-      env:
-        token: ${{ secrets.TFE_TOKEN }}
-        organizationName: ${{ secrets.ORGANIZATIONNAME }}
+    # - run: npm run test:e2e
+    #   env:
+    #     token: ${{ secrets.TFE_TOKEN }}
+    #     organizationName: ${{ secrets.ORGANIZATIONNAME }}
+    - name: Run ESLint
+      run: eslint . --ext .js,.jsx,.ts,.tsx

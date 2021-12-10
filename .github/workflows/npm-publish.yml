@@ -28,7 +28,9 @@ jobs:
       run: npm install -g npm
     - run: npm install
     # run tests just in case
-    - run: npm test:e2e
+    # - run: npm test:e2e
+    - name: Run ESLint
+      run: eslint . --ext .js,.jsx,.ts,.tsx
     # publish to NPM -> there is one caveat, continue reading for the fix
     - run: npm publish
       env:
