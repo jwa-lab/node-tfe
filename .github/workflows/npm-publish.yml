@@ -24,6 +24,8 @@ jobs:
         # Specifies the registry, this field is required!
         registry-url: https://registry.npmjs.org/
     # clean install of your projects' deps. We use "npm ci" to avoid package lock changes
+    - name: Upgrade NPM
+      run: npm install -g npm
     - run: npm install
     # build the project
     - run: npm run build
