@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: stefanoeb/eslint-action@1.0.2
     - uses: actions/checkout@v2
       with:
         # "ref" specifies the branch to check out.
@@ -28,7 +29,9 @@ jobs:
       run: npm install -g npm
     - run: npm install
     # run tests just in case
-    - run: npm test
+    # - run: npm test:e2e
+    - name: Run ESLint
+      run: npm run lint
     # publish to NPM -> there is one caveat, continue reading for the fix
     - run: npm publish
       env:
