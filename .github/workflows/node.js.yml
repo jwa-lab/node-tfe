@@ -30,4 +30,4 @@ jobs:
     - run: npm run test:e2e
       env:
         token: ${{ secrets.TFE_TOKEN }}
-        organizationName: 'jwalab-test'
+        organizationName: ${{ secrets.ORGANIZATIONNAME }}
